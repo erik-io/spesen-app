@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Expense extends Model
 {
+    protected $fillable = [
+        'amount',
+        'expense_date',
+        'cost_center',
+    ];
+
     /**
      * Get the user that owns the expense.
      *
