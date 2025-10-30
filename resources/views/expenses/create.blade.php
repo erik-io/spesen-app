@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Submit new expense report') }}
+            {{ __('Submit New Expense Report') }}
         </h2>
     </x-slot>
 
@@ -38,7 +38,8 @@
                         <div class="mb-4">
                             <x-input-label for="expense_date" :value="__('Date')"/>
                             <x-text-input id="expense_date" class="block mt-1 w-full" type="date" name="expense_date"
-                                          :value="old('expense_date')" required max="{{ now()->toDateString() }}"/>
+                                          :value="old('expense_date')" required max="{{ now()->toDateString() }}"
+                                          min="{{ now()->subDays(90)->toDateString() }}"/>
                             <x-input-error :messages="$errors->get('expense_date')" class="mt-2"/>
                         </div>
 

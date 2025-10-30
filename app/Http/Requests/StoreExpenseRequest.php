@@ -24,7 +24,7 @@ class StoreExpenseRequest extends FormRequest
     {
         return [
             'amount' => 'required|decimal:2|min:0.01|max:99999999.99',
-            'expense_date' => 'required|date|before_or_equal:today',
+            'expense_date' => 'required|date|before_or_equal:today|after_or_equal:' . now()->subDays(90)->toDateString(),
             'cost_center' => 'required|string|max:50',
         ];
     }

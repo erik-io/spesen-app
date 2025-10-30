@@ -13,6 +13,10 @@ class Expense extends Model
         'cost_center',
     ];
 
+    protected $casts = [
+        'expense_date' => 'datetime',
+    ];
+
     /**
      * Get the user that owns the expense.
      *
