@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ExpenseManagementController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,27 +19,35 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'role:employee'])->prefix('/expenses')->group(function () {
-    // Dashboard for employees (status of their own expenses)
-    Route::get('/', [ExpenseController::class, 'index'])->name('expenses.index');
+Route::middleware(['auth', 'verified'])
+    ->prefix('expenses')
+    ->name('expenses.')
+    ->group(function () {
 
-    // Form for creating a new expense
-    Route::get('/create', [ExpenseController::class, 'create'])->name('expenses.create');
+        Route::middleware(['role:employee'])->group(function () {
+            Route::get('/', [ExpenseController::class, 'index'])->name('index');
 
-    // Save the new expense
-    Route::post('', [ExpenseController::class, 'store'])->name('expenses.store');
-});
+            // Form for creating a new expense
+            Route::get('/create', [ExpenseController::class, 'create'])->name('create');
 
-Route::middleware(['auth', 'role:supervisor'])->prefix('/expenses/management')->name('admin.')->group(function () {
-    // Custom route for the supervisor dashboard
-    Route::get('/', [ExpenseController::class, 'adminIndex'])->name('expenses.index');
+            // Save the new expense
+            Route::post('/', [ExpenseController::class, 'store'])->name('store');
+        });
 
-    // Detailed view of an expense for review
-    Route::get('/{expense}', [ExpenseController::class, 'show'])->name('expenses.show');
+        Route::middleware(['role:supervisor'])
+            ->prefix('management')
+            ->name('management.')
+            ->group(function () {
+                // Custom route for the supervisor dashboard
+                Route::get('/', [ExpenseManagementController::class, 'index'])->name('index');
 
-    // Approving or rejecting an expense
-    Route::patch('/{expense}/approve', [ExpenseController::class, 'approve'])->name('expenses.approve');
-    Route::patch('/{expense}/reject', [ExpenseController::class, 'reject'])->name('expenses.reject');
-});
+                // Detailed view of an expense for review
+                Route::get('/{expense}', [ExpenseManagementController::class, 'show'])->name('show');
+
+                // Approving or rejecting an expense
+                Route::patch('/{expense}/approve', [ExpenseManagementController::class, 'approve'])->name('approve');
+                Route::patch('/{expense}/reject', [ExpenseManagementController::class, 'reject'])->name('reject');
+            });
+    });
 
 require __DIR__ . '/auth.php';

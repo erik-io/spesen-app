@@ -28,6 +28,16 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $user = auth()->user();
+
+        if ($user->hasRole('supervisor')) {
+            return redirect()->intended(route('expenses.management.index', absolute: false));
+        }
+
+        if ($user->hasRole('employee')) {
+            return redirect()->intended(route('expenses.index', absolute: false));
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
