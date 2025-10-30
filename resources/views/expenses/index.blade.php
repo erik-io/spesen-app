@@ -19,10 +19,9 @@
 
                     {{-- Button to create new expense --}}
                     <div class="mb-4 text-right">
-                        <a href="{{ route('expenses.create') }}"
-                           class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                        <x-primary-button href="{{ route('expenses.create') }}">
                             {{ __('Submit New Expense') }}
-                        </a>
+                        </x-primary-button>
                     </div>
 
                     {{-- Expense Table --}}
@@ -38,7 +37,7 @@
                                 {{-- Expense Date --}}
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Date
+                                    Expense Date
                                 </th>
                                 {{-- Cost Center --}}
                                 <th scope="col"
@@ -55,10 +54,14 @@
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Status
                                 </th>
+                                <th scope="col" class="px-3 py-3 text-right">
+                                    <span class="sr-only">Reason</span>
+                                </th>
                             </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
+
                             @forelse ($expenses as $expense)
+                                <tbody x-data="{ open: false }" class="bg-white">
                                 <tr>
                                     {{-- ID --}}
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -78,33 +81,52 @@
                                     </td>
                                     {{-- Status --}}
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                            <span class="px-2 inline-flex text-sm font-medium leading-5 rounded-full
                                                 {{-- 'approved' (green), 'pending' (yellow), 'rejected' (red) --}}
                                                 @if($expense->status == 'pending') bg-yellow-100 text-yellow-800
                                                 @elseif($expense->status == 'approved') bg-green-100 text-green-800
                                                 @elseif($expense->status == 'rejected') bg-red-100 text-red-800
-                                                @endif"
-                                                  @if($expense->status == 'rejected' && $expense->rejection_comment)
-                                                      {{-- Explicit handling of HTML attribulets --}}
-                                                      title="Reason: {{ e($expense->rejection_comment) }}"
-                                                @endif
-                                                    >
+                                                @endif">
                                                 {{-- Capitalize the first character --}}
                                                 {{ ucfirst($expense->status) }}
                                             </span>
                                     </td>
+                                    {{-- Action Cell (Show/Hide Rejection Reason) --}}
+                                    <td class="px-3 py-4 text-center text-sm font-medium">
+                                        @if($expense->status == 'rejected' && $expense->rejection_comment)
+                                            <button
+                                                @click='open = !open'
+                                                class='inline-flex items-center text-indigo-600 hover:text-indigo-900 text-sm font-medium'>
+                                                <span x-show='!open' x-cloak>{{ __('View Reason') }}</span>
+                                                <span x-show='open' x-cloak>{{ __('Hide Reason') }}</span>
+                                            </button>
+                                        @endif
+                                    </td>
                                 </tr>
+                                {{-- Rejection Comment (hidden by default) --}}
+                                <tr x-show="open" x-transition x-cloak>
+                                    <td colspan="6" class="p-0">
+                                        <div class="p-4 bg-gray-50 border-l-4 border-red-400">
+                                            <h4 class="font-bold text-sm text-red-800">{{ __('Rejection Comment') }}</h4>
+                                            <p class="mt-1 text-sm text-gray-700">
+                                                {{-- Convert newlines to <br> tags and explicit handling of HTML attributes --}}
+                                                {!! nl2br(e($expense->rejection_comment)) !!}
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
                             @empty
+                                <tbody class="bg-white">
                                 <tr>
-                                    <td colspan="5" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">
+                                    <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">
                                         {{ __('No expense reports found.') }}
                                     </td>
                                 </tr>
+                                </tbody>
                             @endforelse
-                            </tbody>
                         </table>
                     </div>
-
                     {{-- Pagination Links --}}
                     <div class="mt-4">
                         {{ $expenses->links() }}

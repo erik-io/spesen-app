@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Hide the element when it's loading */
+[x-cloak] {
+    display: none !important;
+}
