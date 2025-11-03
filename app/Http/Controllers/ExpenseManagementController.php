@@ -36,4 +36,11 @@ class ExpenseManagementController extends Controller
 
         return redirect()->route('expenses.management.index')->with('success', 'Expense rejected successfully.');
     }
+
+    public function history(): View
+    {
+        $expenses = Expense::with('user')->whereNot('status', 'pending')->latest()->paginate(10);
+
+        return view('expenses.management.history', ['expenses' => $expenses]);
+    }
 }

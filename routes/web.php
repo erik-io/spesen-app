@@ -41,6 +41,9 @@ Route::middleware(['auth', 'verified'])
                 // Custom route for the supervisor dashboard
                 Route::get('/', [ExpenseManagementController::class, 'index'])->name('index');
 
+                // View all expenses in the system
+                Route::get('/all', [ExpenseManagementController::class, 'history'])->name('history');
+
                 // Detailed view of an expense for review
                 Route::get('/{expense}', [ExpenseManagementController::class, 'show'])->name('show');
 
