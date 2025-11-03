@@ -11,6 +11,8 @@ class Expense extends Model
         'amount',
         'expense_date',
         'cost_center',
+        'status',
+        'rejection_comment',
     ];
 
     protected $casts = [
