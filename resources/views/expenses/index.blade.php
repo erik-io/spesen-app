@@ -108,7 +108,7 @@
                                     <td colspan="6" class="p-0">
                                         <div class="p-4 bg-gray-50 border-l-4 border-red-400">
                                             <h4 class="font-bold text-sm text-red-800">{{ __('Rejection Comment') }}</h4>
-                                            <p class="mt-1 text-sm text-gray-700">
+                                            <p class="mt-1 text-sm text-gray-700 break-words hyphens-auto">
                                                 {{-- Convert newlines to <br> tags and explicit handling of HTML attributes --}}
                                                 {!! nl2br(e($expense->rejection_comment)) !!}
                                             </p>

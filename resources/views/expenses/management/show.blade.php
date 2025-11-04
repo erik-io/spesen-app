@@ -199,7 +199,7 @@
                             @elseif ($expense->status == 'rejected' && $expense->rejection_comment)
                                 <h3 class="text-lg font-medium text-red-900">{{ __('Reason for Rejection') }}</h3>
                                 <div class="mt-2 p-4 bg-gray-50 border-l-4 border-red-400">
-                                    <p class="text-base text-gray-700">
+                                    <p class="text-base text-gray-700 break-words hyphens-auto">
                                         {!! nl2br(e($expense->rejection_comment)) !!}
                                     </p>
                                 </div>
