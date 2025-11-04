@@ -162,7 +162,7 @@
                                                 <x-danger-button type="button"
                                                                  x-on:click="$refs.rejectForm.submit()"
                                                                  class="ms-3">
-                                                    {{ __('Yes, Reject') }}
+                                                    {{ __('Reject') }}
                                                 </x-danger-button>
                                             </div>
                                         </div>
