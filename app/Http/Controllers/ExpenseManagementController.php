@@ -39,7 +39,7 @@ class ExpenseManagementController extends Controller
 
     public function history(): View
     {
-        $expenses = Expense::with('user')->whereNot('status', 'pending')->latest()->paginate(10);
+        $expenses = Expense::with('user')->latest()->paginate(10);
 
         return view('expenses.management.history', ['expenses' => $expenses]);
     }
