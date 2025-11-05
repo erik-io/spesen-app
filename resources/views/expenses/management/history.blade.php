@@ -39,6 +39,11 @@
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Employee
                                 </th>
+                                {{-- Submission Date --}}
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Submission Date
+                                </th>
                                 {{-- Expense Date --}}
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -56,7 +61,7 @@
                                 </th>
                                 {{-- Status (pending, approved, rejected) --}}
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Status
                                 </th>
                                 {{-- Details --}}
@@ -78,6 +83,10 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ $expense->user->name }}
                                     </td>
+                                    {{-- Submission Date --}}
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {{ $expense->created_at?->format('d.m.Y') }}
+                                    </td>
                                     {{-- Expense Date --}}
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ $expense->expense_date?->format('d.m.Y') }}
@@ -91,7 +100,7 @@
                                         {{ number_format($expense->amount, 2, ',', '.') }} €
                                     </td>
                                     {{-- Status --}}
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">
                                             <span class="px-2 inline-flex text-sm font-medium leading-5 rounded-full
                                                 {{-- 'approved' (green), 'pending' (yellow), 'rejected' (red) --}}
                                                 @if($expense->status == 'pending') bg-yellow-100 text-yellow-800
@@ -114,7 +123,7 @@
                             @empty
                                 <tbody class="bg-white">
                                 <tr>
-                                    <td colspan="7" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">
+                                    <td colspan="8" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">
                                         {{ __('No expense reports found.') }}
                                     </td>
                                 </tr>

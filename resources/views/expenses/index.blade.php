@@ -34,6 +34,11 @@
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     ID
                                 </th>
+                                {{-- Submission Date --}}
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Submission Date
+                                </th>
                                 {{-- Expense Date --}}
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -51,7 +56,7 @@
                                 </th>
                                 {{-- Status (pending, approved, rejected) --}}
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Status
                                 </th>
                                 <th scope="col" class="px-3 py-3 text-right">
@@ -67,6 +72,10 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ $expense->id }}
                                     </td>
+                                    {{-- Submission Date --}}
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {{ $expense->created_at?->format('d.m.Y') }}
+                                    </td>
                                     {{-- Expense Date --}}
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ $expense->expense_date?->format('d.m.Y') }}
@@ -80,7 +89,7 @@
                                         {{ number_format($expense->amount, 2, ',', '.') }} €
                                     </td>
                                     {{-- Status --}}
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">
                                             <span class="px-2 inline-flex text-sm font-medium leading-5 rounded-full
                                                 {{-- 'approved' (green), 'pending' (yellow), 'rejected' (red) --}}
                                                 @if($expense->status == 'pending') bg-yellow-100 text-yellow-800
@@ -106,7 +115,7 @@
                                 {{-- Rejection Comment (hidden by default) --}}
                                 @if($expense->status == 'rejected' && $expense->rejection_comment !== null)
                                     <tr x-show="open" x-transition x-cloak>
-                                        <td colspan="6" class="p-0">
+                                        <td colspan="7" class="p-0">
                                             <div class="p-4 bg-gray-50 border-l-4 border-red-400">
                                                 <h4 class="font-bold text-sm text-red-800">{{ __('Rejection Comment') }}</h4>
                                                 <p class="mt-1 text-sm text-gray-700 break-all hyphens-auto">
@@ -121,7 +130,7 @@
                             @empty
                                 <tbody class="bg-white">
                                 <tr>
-                                    <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">
+                                    <td colspan="7" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">
                                         {{ __('No expense reports found.') }}
                                     </td>
                                 </tr>
