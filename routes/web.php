@@ -10,6 +10,14 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
+    $user = auth()->user();
+    if ($user->hasRole('supervisor')) {
+        return redirect()->route('expenses.management.index');
+    }
+
+    if ($user->hasRole('employee')) {
+        return redirect()->route('expenses.index');
+    }
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
