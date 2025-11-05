@@ -85,7 +85,7 @@
                         <div x-data="{
                             showRejectForm: {{ $errors->has('rejection_comment') ? 'true' : 'false' }},
                             maxChars: 5000,
-                            comment: '{{ old('rejection_comment') }}'
+                            comment: @js(old('rejection_comment'))
                             }">
                             @if ($expense->status == 'pending')
                                 {{-- Button Container (Approve / Reject) --}}
@@ -152,6 +152,37 @@
                                             <p class="mt-2 text-base text-gray-600">
                                                 {{ __('Are you sure you want to reject this expense report? The employee will see the comment you provided.') }}
                                             </p>
+
+                                            {{-- Dynamic Data Display (Rejection) --}}
+                                            <div class="mt-4 space-y-2 text-sm text-gray-800 border-t border-b py-4">
+                                                <div class="flex justify-between">
+                                                    <span class="font-medium text-gray-600">{{ __('Employee') }}:</span>
+                                                    <span class="font-bold">{{ $expense->user->name }}</span>
+                                                </div>
+                                                <div class="flex justify-between">
+                                                    <span class="font-medium text-gray-600">{{ __('Amount') }}:</span>
+                                                    <span class="font-bold">{{ number_format($expense->amount, 2, ',', '.') }} €</span>
+                                                </div>
+                                                <div class="flex justify-between">
+                                                    <span class="font-medium text-gray-600">{{ __('Date') }}:</span>
+                                                    <span
+                                                        class="font-bold">{{ $expense->expense_date?->format('d.m.Y') }}</span>
+                                                </div>
+                                                <div class="flex justify-between">
+                                                    <span
+                                                        class="font-medium text-gray-600">{{ __('Cost Center') }}:</span>
+                                                    <span class="font-bold">{{ $expense->cost_center }}</span>
+                                                </div>
+                                            </div>
+
+                                            {{-- Rejection Comment Preview --}}
+                                            <div class="pt-2">
+                                                <span class="font-medium text-gray-600">{{ __('Comment') }}:</span>
+                                                <div
+                                                    class="mt-1 p-2 bg-gray-50 border rounded text-gray-800 whitespace-pre-line break-words"
+                                                    x-text="comment"></div>
+                                            </div>
+
                                             <div class="mt-6 flex justify-end">
                                                 {{-- Cancel Button --}}
                                                 <x-secondary-button
@@ -181,6 +212,28 @@
                                         <p class="mt-2 text-base text-gray-600">
                                             {{ __('Are you sure you want to approve this expense report?') }}
                                         </p>
+
+                                        {{-- Dynamic Data Display (Approve) --}}
+                                        <div class="mt-4 space-y-2 text-sm text-gray-800 border-t border-b py-4">
+                                            <div class="flex justify-between">
+                                                <span class="font-medium text-gray-600">{{ __('Employee') }}:</span>
+                                                <span class="font-bold">{{ $expense->user->name }}</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="font-medium text-gray-600">{{ __('Amount') }}:</span>
+                                                <span class="font-bold">{{ number_format($expense->amount, 2, ',', '.') }} €</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="font-medium text-gray-600">{{ __('Date') }}:</span>
+                                                <span
+                                                    class="font-bold">{{ $expense->expense_date?->format('d.m.Y') }}</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="font-medium text-gray-600">{{ __('Cost Center') }}:</span>
+                                                <span class="font-bold">{{ $expense->cost_center }}</span>
+                                            </div>
+                                        </div>
+
                                         <div class="mt-6 flex justify-end">
                                             {{-- Cancel Button --}}
                                             <x-secondary-button
