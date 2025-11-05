@@ -120,7 +120,7 @@
                                         <textarea id="rejection_comment"
                                                   name="rejection_comment"
                                                   rows="4"
-                                                  class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                                  class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm min-h-32"
                                                   x-model="comment"
                                                   maxlength="5000"
                                                   required>{{ old('rejection_comment') }}</textarea>
@@ -197,7 +197,6 @@
                                 </x-modal>
                                 {{-- Show rejection comment if it's rejected --}}
                             @elseif ($expense->status == 'rejected' && $expense->rejection_comment !== null && $expense->rejection_comment !== '')
-                                )
                                 <h3 class="text-lg font-medium text-red-900">{{ __('Reason for Rejection') }}</h3>
                                 <div class="mt-2 p-4 bg-gray-50 border-l-4 border-red-400">
                                     <p class="text-base text-gray-700 break-words hyphens-auto">
