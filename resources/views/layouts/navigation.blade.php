@@ -12,6 +12,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    @hasanyrole('employee|supervisor') {{-- @if(auth()->user() && auth()->user()->hasAnyRole(['employee', 'supervisor'])) --}}
                     {{-- Employee Navigation --}}
                     @role('employee')
                     <x-nav-link :href="route('expenses.index')" :active="request()->routeIs('expenses.index')">
@@ -32,6 +33,11 @@
                         {{ __('All Expenses') }}
                     </x-nav-link>
                     @endrole
+                    @else
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                        @endhasanyrole
                 </div>
             </div>
 
@@ -92,6 +98,7 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
+            @hasanyrole('employee|supervisor') {{-- @if(auth()->user() && auth()->user()->hasAnyRole(['employee', 'supervisor'])) --}}
             {{-- Employee Navigation --}}
             @role('employee')
             <x-responsive-nav-link :href="route('expenses.index')" :active="request()->routeIs('expenses.index')">
@@ -112,6 +119,11 @@
                 {{ __('All Expenses') }}
             </x-responsive-nav-link>
             @endrole
+            @else
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+                @endhasanyrole
         </div>
 
         <!-- Responsive Settings Options -->
