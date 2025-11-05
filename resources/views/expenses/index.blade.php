@@ -51,7 +51,7 @@
                                 </th>
                                 {{-- Amount --}}
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Amount
                                 </th>
                                 {{-- Status (pending, approved, rejected) --}}
@@ -85,7 +85,7 @@
                                         {{ $expense->cost_center }}
                                     </td>
                                     {{-- Amount --}}
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4 whitespace-nowrap text-right">
                                         {{ number_format($expense->amount, 2, ',', '.') }} €
                                     </td>
                                     {{-- Status --}}
