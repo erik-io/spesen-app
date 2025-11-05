@@ -93,7 +93,7 @@
                                     </td>
                                     {{-- Action Cell (Show/Hide Rejection Reason) --}}
                                     <td class="px-3 py-4 text-center text-sm font-medium">
-                                        @if($expense->status == 'rejected' && $expense->rejection_comment)
+                                        @if($expense->status == 'rejected' && $expense->rejection_comment !== null && $expense->rejection_comment !== '')
                                             <button
                                                 @click='open = !open'
                                                 class='inline-flex items-center text-indigo-600 hover:text-indigo-900 text-sm font-medium'>
@@ -104,17 +104,19 @@
                                     </td>
                                 </tr>
                                 {{-- Rejection Comment (hidden by default) --}}
-                                <tr x-show="open" x-transition x-cloak>
-                                    <td colspan="6" class="p-0">
-                                        <div class="p-4 bg-gray-50 border-l-4 border-red-400">
-                                            <h4 class="font-bold text-sm text-red-800">{{ __('Rejection Comment') }}</h4>
-                                            <p class="mt-1 text-sm text-gray-700 break-all hyphens-auto">
-                                                {{-- Convert newlines to <br> tags and explicit handling of HTML attributes --}}
-                                                {!! nl2br(e($expense->rejection_comment)) !!}
-                                            </p>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @if($expense->status == 'rejected' && $expense->rejection_comment !== null)
+                                    <tr x-show="open" x-transition x-cloak>
+                                        <td colspan="6" class="p-0">
+                                            <div class="p-4 bg-gray-50 border-l-4 border-red-400">
+                                                <h4 class="font-bold text-sm text-red-800">{{ __('Rejection Comment') }}</h4>
+                                                <p class="mt-1 text-sm text-gray-700 break-all hyphens-auto">
+                                                    {{-- Convert newlines to <br> tags and explicit handling of HTML attributes --}}
+                                                    {!! nl2br(e($expense->rejection_comment)) !!}
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endif
                                 </tbody>
                             @empty
                                 <tbody class="bg-white">
