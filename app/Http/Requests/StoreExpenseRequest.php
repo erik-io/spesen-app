@@ -36,8 +36,21 @@ class StoreExpenseRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         if ($this->has('amount')) {
+            // Get the input value
+            $amount = $this->input('amount');
+
+            // Convert comma to period
+            $amount = str_replace(',', '.', $amount);
+
+            // Check if it's numeric and appears to be an integer (no decimal point)
+            if (is_numeric($amount) && strpos($amount, '.') === false) {
+                // Append '.00'
+                $amount .= '.00';
+            }
+
+            // Merge the manipulated value back into the request
             $this->merge([
-                'amount' => str_replace(',', '.', $this->input('amount')),
+                'amount' => $amount,
             ]);
         }
     }

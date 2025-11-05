@@ -8,7 +8,13 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900" x-data>
+                {{-- Initialize Alpine data context for the form inputs --}}
+                <div class="p-6 text-gray-900"
+                     x-data="{
+                         amountInput: '{{ old('amount', '') }}',
+                         dateInput: '{{ old('expense_date', '') }}',
+                         costCenterInput: '{{ old('cost_center', '') }}'
+                     }">
 
                     {{-- Validation Errors --}}
                     @if ($errors->any())
@@ -37,7 +43,8 @@
                             </x-input-label>
                             <x-text-input id="amount" class="block mt-1 w-full" type="number" step="0.01"
                                           name="amount"
-                                          :value="old('amount')" required autofocus placeholder="0,00" min="0.01"
+                                          x-model="amountInput"
+                                          required autofocus placeholder="0,00" min="0.01"
                                           max="99999999.99"/>
                             <x-input-error :messages="$errors->get('amount')" class="mt-2"/>
                         </div>
@@ -49,7 +56,8 @@
                                 <span class="text-red-500">*</span>
                             </x-input-label>
                             <x-text-input id="expense_date" class="block mt-1 w-full" type="date" name="expense_date"
-                                          :value="old('expense_date')" required max="{{ now()->toDateString() }}"
+                                          x-model="dateInput"
+                                          required max="{{ now()->toDateString() }}"
                                           min="{{ now()->subDays(90)->toDateString() }}"/>
                             <x-input-error :messages="$errors->get('expense_date')" class="mt-2"/>
                         </div>
@@ -61,7 +69,8 @@
                                 <span class="text-red-500">*</span>
                             </x-input-label>
                             <x-text-input id="cost_center" class="block mt-1 w-full" type="text" name="cost_center"
-                                          :value="old('cost_center')" required maxlength="50"/>
+                                          x-model="costCenterInput"
+                                          required maxlength="50"/>
                             <x-input-error :messages="$errors->get('cost_center')" class="mt-2"/>
                         </div>
 
@@ -77,6 +86,7 @@
                             </x-primary-button>
                         </div>
                     </form>
+
                     {{-- Confirmation Modal --}}
                     <x-modal name="confirm-submission">
                         <div class="p-6">
@@ -84,8 +94,28 @@
                                 {{ __('Confirm Submission') }}
                             </h2>
                             <p class="mt-2 text-base text-gray-600">
-                                {{ __('Are you sure you want to submit this expense report? You cannot edit it after submission,') }}
+                                {{ __('Are you sure you want to submit this expense report? You cannot edit it after submission.') }}
                             </p>
+
+                            {{-- Dynamic Data Display --}}
+                            <div class="mt-4 space-y-2 text-sm text-gray-800 border-t border-b py-4">
+                                <div class="flex justify-between">
+                                    <span class="font-medium text-gray-600">{{ __('Amount') }}:</span>
+                                    {{-- Display formatted amount, handling commas and ensuring 2 decimal places --}}
+                                    <span class="font-bold"
+                                          x-text="`${parseFloat(String(amountInput).replace(',', '.')).toFixed(2)} EUR`"></span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="font-medium text-gray-600">{{ __('Date') }}:</span>
+                                    <span class="font-bold" x-text="dateInput || '{{ __('Not specified') }}'"></span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="font-medium text-gray-600">{{ __('Cost Center') }}:</span>
+                                    <span class="font-bold"
+                                          x-text="costCenterInput || '{{ __('Not specified') }}'"></span>
+                                </div>
+                            </div>
+
                             <div class="mt-6 flex justify-end">
                                 <x-secondary-button x-on:click="$dispatch('close-modal', 'confirm-submission')">
                                     {{ __('Cancel') }}
