@@ -7,15 +7,27 @@
 
     if ($currentSortBy === $sortBy) {
     $targetDirection = $currentSortDirection === 'asc' ? 'desc' : 'asc';
-    $icon = $currentSortDirection === 'asc' ? ' &#9650;' : ' &#9660;';
+    $icon = $currentSortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
     }
 @endphp
 
 <a href="{{ request()->fullUrlWithQuery(['sort_by' => $sortBy, 'sort_direction' => $targetDirection]) }}"
-   class="inline-flex items-center group text-gray-500 hover:text-gray-700">
-    {{ $label }}
-    <span class="ms-1 text-gray-500">
-        {{-- This will render the HTML arrow entities --}}
-        {!! $icon !!}
+   class="inline-flex items-center group">
+
+    <span>{{ $label }}</span>
+
+    {{-- Icon container --}}
+    <span class="ms-1.5">
+        @if ($isSorted)
+            {{-- Column is currently sorted. Show the active direction icon. --}}
+            @if ($currentSortDirection === 'asc')
+                <i class="fas fa-sort-up" aria-hidden="true"></i>
+            @else
+                <i class="fas fa-sort-down" aria-hidden="true"></i>
+            @endif
+        @else
+            {{-- Column is not sorted. Show a neutral sort icon on hover. --}}
+            <i class="fas fa-sort text-gray-300 group-hover:text-gray-500" aria-hidden="true"></i>
+        @endif
     </span>
 </a>

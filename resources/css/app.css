@@ -1,3 +1,7 @@
+/* Import Font Awesome */
+@import '@fortawesome/fontawesome-free/css/all.css';
+
+/* Existing Tailwind imports */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

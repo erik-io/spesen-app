@@ -29,7 +29,7 @@ class SortableLink extends Component
         if ($this->currentSortBy === $this->sortBy) {
             $this->isSorted = true;
             $this->targetDirection = $this->currentSortDirection === 'asc' ? 'desc' : 'asc';
-            $this->icon = $this->currentSortDirection === 'asc' ? ' &#9650;' : ' &#9660;';
+            $this->icon = $this->currentSortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
         }
     }
 
