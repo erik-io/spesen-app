@@ -46,7 +46,7 @@ class ExpenseController extends Controller
     public function index(Request $request): View
     {
         // Define allowed sorts
-        $allowedSortBy = ['created_at', 'expense_date', 'amount', 'status'];
+        $allowedSortBy = ['created_at', 'expense_date', 'cost_center', 'amount', 'status'];
         // Define allowed per pages
         $allowedPerPages = [10, 25, 50, 100];
 

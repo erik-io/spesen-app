@@ -71,7 +71,7 @@
                                 {{-- Cost Center --}}
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Cost Center
+                                    <x-sortable-link sortBy="cost_center" label="{{ __('Cost Center') }}"/>
                                 </th>
                                 {{-- Amount --}}
                                 <th scope="col"
