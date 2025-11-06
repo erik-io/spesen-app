@@ -17,8 +17,34 @@
                         </div>
                     @endif
 
-                    {{-- Button to show pending expenses --}}
-                    <div class="mb-4 text-right">
+
+                    <div class="flex justify-end items-center mb-4 space-x-4">
+                        {{-- Per Page Form --}}
+                        <form method="GET" action="{{ route('expenses.management.history') }}"
+                              class="flex items-center space-x-2">
+                            {{-- Hidden inputs to preserve sorting --}}
+                            <input type="hidden" name="sort_by" value="{{ request('sort_by', 'created_at') }}">
+                            <input type="hidden" name="sort_direction" value="{{ request('sort_direction', 'desc') }}">
+
+                            <label for="per_page" class="block text-sm font-medium text-gray-700">
+                                {{ __('Show') }}
+                            </label>
+                            <select name="per_page" id="per_page"
+                                    class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+                                    onchange="this.form.submit()">
+                                @foreach ([10, 25, 50, 100] as $value)
+                                    <option
+                                        value="{{ $value }}" {{ request('per_page', 10) == $value ? 'selected' : '' }}>
+                                        {{ $value }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <label for="per_page" class="block text-sm font-medium text-gray-700">
+                                {{ __('per page') }}
+                            </label>
+                        </form>
+
+                        {{-- Button to show pending expenses --}}
                         <x-primary-button href="{{ route('expenses.management.index') }}">
                             {{ __('View Pending') }}
                         </x-primary-button>
@@ -37,32 +63,32 @@
                                 {{-- Employee --}}
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Employee
+                                    Employee Name
                                 </th>
                                 {{-- Submission Date --}}
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Submission Date
+                                    <x-sortable-link sortBy="created_at" label="{{ __('Submission Date') }}"/>
                                 </th>
                                 {{-- Expense Date --}}
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Expense Date
+                                    <x-sortable-link sortBy="expense_date" label="{{ __('Expense Date') }}"/>
                                 </th>
                                 {{-- Cost Center --}}
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Cost Center
+                                    <x-sortable-link sortBy="cost_center" label="{{ __('Cost Center') }}"/>
                                 </th>
                                 {{-- Amount --}}
                                 <th scope="col"
                                     class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Amount
+                                    <x-sortable-link sortBy="amount" label="{{ __('Amount') }}"/>
                                 </th>
                                 {{-- Status (pending, approved, rejected) --}}
                                 <th scope="col"
                                     class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Status
+                                    <x-sortable-link sortBy="status" label="{{ __('Status') }}"/>
                                 </th>
                                 {{-- Details --}}
                                 <th scope="col"

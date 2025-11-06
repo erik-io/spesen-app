@@ -20,8 +20,12 @@ class SortableLink extends Component
     {
         $this->sortBy = $sortBy;
         $this->label = $label;
+
+        // Determine default sort direction based on the route
+        $defaultDirection = request()->routeIs('expenses.management.history') ? 'desc' : 'asc';
+
         $this->currentSortBy = request('sort_by', 'created_at');
-        $this->currentSortDirection = request('sort_direction', 'desc');
+        $this->currentSortDirection = request('sort_direction', $defaultDirection);
     }
 
     /**
