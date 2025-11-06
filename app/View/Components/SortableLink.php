@@ -12,9 +12,6 @@ class SortableLink extends Component
     public string $label;
     public string $currentSortBy;
     public string $currentSortDirection;
-    public string $targetDirection = 'asc';
-    public bool $isSorted = false;
-    public string $icon = '';
 
     /**
      * Create a new component instance.
@@ -25,12 +22,6 @@ class SortableLink extends Component
         $this->label = $label;
         $this->currentSortBy = request('sort_by', 'created_at');
         $this->currentSortDirection = request('sort_direction', 'desc');
-
-        if ($this->currentSortBy === $this->sortBy) {
-            $this->isSorted = true;
-            $this->targetDirection = $this->currentSortDirection === 'asc' ? 'desc' : 'asc';
-            $this->icon = $this->currentSortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
-        }
     }
 
     /**
