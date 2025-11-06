@@ -18,7 +18,7 @@ class ExpenseManagementController extends Controller
 
     private function getPaginatedExpenses(Request $request, string $statusScope)
     {
-        $allowedSortBy = ['created_at', 'expense_date', 'cost_center', 'amount', 'status'];
+        $allowedSortBy = ['created_at', 'expense_date', 'cost_center', 'amount', 'status', 'user_id'];
         $allowedPerPage = [10, 25, 50, 100];
 
         $defaultSortBy = 'created_at';

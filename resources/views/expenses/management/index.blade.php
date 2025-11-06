@@ -63,7 +63,7 @@
                                 {{-- Employee Name --}}
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Employee Name
+                                    <x-sortable-link sortBy="user_id" label="{{ __('Employee Name') }}"/>
                                 </th>
                                 {{-- Submission Date --}}
                                 <th scope="col"
