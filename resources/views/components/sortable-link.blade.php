@@ -22,10 +22,12 @@
 @endphp
 
 <a href="{{ request()->fullUrlWithQuery(['sort_by' => $sortBy, 'sort_direction' => $targetDirection]) }}"
-   class="inline-flex items-center group text-gray-500 hover:text-gray-700">
-    {{ $label }}
-    <span class="fa-stack ml-1" style="font-size: 0.7em; margin-bottom: 0.2em;">
-        <i class="fas fa-sort-up fa-stack-1x {{ $upArrowClass }}"></i>
-        <i class="fas fa-sort-down fa-stack-1x {{ $downArrowClass }}" style="margin-top: 0.25em;"></i>
+   class="group text-gray-500 hover:text-gray-700">
+    <span class="relative inline-flex items-center">
+        {{ $label }}
+        <span class="fa-stack ml-1" style="font-size: 0.7em; margin-bottom: 0.2em; margin-right: -1.2em;">
+            <i class="fas fa-sort-up fa-stack-1x {{ $upArrowClass }}"></i>
+            <i class="fas fa-sort-down fa-stack-1x {{ $downArrowClass }}" style="margin-top: 0.25em;"></i>
+        </span>
     </span>
 </a>
