@@ -11,7 +11,6 @@ class Expense extends Model
     use HasFactory;
 
     protected $fillable = [
-        // 'user_id',
         'amount',
         'expense_date',
         'cost_center',
