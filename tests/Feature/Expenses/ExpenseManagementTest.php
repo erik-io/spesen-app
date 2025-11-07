@@ -123,6 +123,8 @@ class ExpenseManagementTest extends TestCase
             $this->assertSame($oldestExpense->id, $items[0]->id);
             $this->assertSame($middleExpense->id, $items[1]->id);
             $this->assertSame($newestExpense->id, $items[2]->id);
+
+            return true;
         });
     }
 
