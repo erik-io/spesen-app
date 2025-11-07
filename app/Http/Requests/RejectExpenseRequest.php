@@ -23,7 +23,7 @@ class RejectExpenseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'rejection_comment' => 'required|string|max:5000'
+            'rejection_comment' => 'required|string|max:5000|filled'
         ];
     }
 }
