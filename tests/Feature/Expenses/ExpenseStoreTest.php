@@ -92,6 +92,7 @@ class ExpenseStoreTest extends TestCase
     public function test_user_without_permission_cannot_store_expense(): void
     {
         $user = User::factory()->create();
+        // This user does not have the 'employee' role
 
         $payload = [
             'amount' => 10.00,
@@ -99,9 +100,11 @@ class ExpenseStoreTest extends TestCase
             'cost_center' => 'CC-101',
         ];
 
-        $this->actingAs($user)
-            ->post(route('expenses.store'), $payload)
-            ->assertForbidden();
+        $response = $this->actingAs($user)
+            ->post(route('expenses.store'), $payload);
+
+        $response->assertForbidden();
+        $this->assertDatabaseCount('expenses', 0);
     }
 
     public function test_user_cannot_store_expense_with_too_high_amount(): void
@@ -117,7 +120,7 @@ class ExpenseStoreTest extends TestCase
 
         $response = $this->actingAs($user)
             ->from(route('expenses.create'))
-            ->post(route('expenses.index'), $payload);
+            ->post(route('expenses.store'), $payload);
 
         $response->assertRedirect(route('expenses.create'));
         $response->assertSessionHasErrors(['amount']);
