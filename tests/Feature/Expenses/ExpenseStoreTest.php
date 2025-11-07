@@ -334,7 +334,7 @@ class ExpenseStoreTest extends TestCase
         $this->assertDatabaseCount('expenses', 0);
     }
 
-    public function test_employee_cannot_store_expense_with_valid_data_and_status_rejected(): void
+    public function test_employee_cannot_manually_set_status_to_approved(): void
     {
         $user = User::factory()->create();
         $user->assignRole('employee');
@@ -355,7 +355,7 @@ class ExpenseStoreTest extends TestCase
         $this->assertDatabaseCount('expenses', 0);
     }
 
-    public function test_employee_cannot_store_expense_with_valid_data_and_status_pending(): void
+    public function test_employee_cannot_manually_set_status_to_pending(): void
     {
         $user = User::factory()->create();
         $user->assignRole('employee');
