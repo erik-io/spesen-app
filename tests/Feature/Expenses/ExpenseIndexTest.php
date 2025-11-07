@@ -41,8 +41,8 @@ class ExpenseIndexTest extends TestCase
 
     public function test_user_cannot_view_expenses_list_without_auth(): void
     {
-        $response = $this->get(route('expenses.index'));
-        $response->assertRedirect('/login');
+        $this->get(route('expenses.index'))
+            ->assertRedirect(route('login'));
     }
 
     public function test_employee_only_sees_their_expenses(): void
@@ -138,11 +138,6 @@ class ExpenseIndexTest extends TestCase
             $this->assertCount(10, $paginator->items());
             return true;
         });
-    }
-
-    public function test_guest_redirected_to_login(): void
-    {
-        $this->get(route('expenses.index'))->assertRedirect(route('login'));
     }
 
     public function test_employee_can_sort_expenses_by_amount(): void
