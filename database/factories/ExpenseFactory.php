@@ -25,7 +25,7 @@ class ExpenseFactory extends Factory
             'cost_center' => $this->faker->bothify('CC-###'),
             'amount' => $this->faker->randomFloat(2, 10, 1000),
             'status' => $status,
-            'rejection_comment' => $status === 'rejected' ? $this->faker->paragraph : null,
+            'rejection_comment' => $status === 'rejected' ? $this->faker->paragraph() : null,
         ];
     }
 
@@ -52,7 +52,7 @@ class ExpenseFactory extends Factory
     {
         return $this->state(fn(array $attributes) => [
             'status' => 'rejected',
-            'rejection_comment' => $comment ?? $this->faker->paragraph,
+            'rejection_comment' => $comment ?? $this->faker->paragraph(),
         ]);
     }
 }
