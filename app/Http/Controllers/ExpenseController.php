@@ -7,12 +7,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-/**
- * Handle the storage of a new expense for the authenticated user.
- *
- * @param StoreExpenseRequest $request Request instance containing validated data for creating the expense.
- * @return RedirectResponse Redirect response to the expenses index with a success message.
- */
 class ExpenseController extends Controller
 {
     /**
