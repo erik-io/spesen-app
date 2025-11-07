@@ -16,7 +16,7 @@ class Expense extends Model
     ];
 
     protected $casts = [
-        'expense_date' => 'datetime',
+        'expense_date' => 'datetime:Y-m-d',
     ];
 
     /**
