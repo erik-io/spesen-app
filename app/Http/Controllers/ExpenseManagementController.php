@@ -26,7 +26,6 @@ class ExpenseManagementController extends Controller
 
         if ($statusScope === 'all') {
             // For history, default to descending order
-            $defaultSortBy = 'created_at';
             $defaultSortDirection = 'desc';
         }
 
@@ -76,7 +75,7 @@ class ExpenseManagementController extends Controller
         return redirect()->route('expenses.management.index')->with('success', 'Expense approved successfully.');
     }
 
-    public function reject(RejectExpenseRequest $request, Expense $expense)
+    public function reject(RejectExpenseRequest $request, Expense $expense): RedirectResponse
     {
         $expense->update(['status' => 'rejected', 'rejection_comment' => $request->validated('rejection_comment')]);
 
