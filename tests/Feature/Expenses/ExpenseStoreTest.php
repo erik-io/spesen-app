@@ -22,7 +22,7 @@ class ExpenseStoreTest extends TestCase
         ];
 
         $response = $this->actingAs($user)
-            ->post(route('expenses.index'), $payload);
+            ->post(route('expenses.store'), $payload);
 
         $response->assertRedirect(route('expenses.index'));
         $this->assertDatabaseHas('expenses', [
@@ -32,5 +32,382 @@ class ExpenseStoreTest extends TestCase
             'cost_center' => 'CC-101',
             'status' => 'pending',
         ]);
+    }
+
+    public function test_amount_string_with_comma_is_converted_to_decimal(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => '100,50',
+            'expense_date' => now()->subDay()->toDateString(),
+            'cost_center' => 'CC-202',
+        ];
+
+        $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.store'), $payload)
+            ->assertRedirect(route('expenses.index'));
+
+        $this->assertDatabaseHas('expenses', [
+            'user_id' => $user->id,
+            'amount' => 100.50,
+            'expense_date' => $payload['expense_date'],
+            'cost_center' => 'CC-202',
+        ]);
+    }
+
+    public function test_employee_cannot_store_expense_with_invalid_data(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'expense_date' => now()->addDay()->toDateString(),
+            'cost_center' => str_repeat('X', 60),
+        ];
+
+        $response = $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.store'), $payload);
+
+        $response->assertRedirect(route('expenses.create'));
+        $response->assertSessionHasErrors(['amount', 'expense_date', 'cost_center']);
+        $this->assertDatabaseCount('expenses', 0);
+    }
+
+    public function test_guest_cannot_store_expense(): void
+    {
+        $payload = [
+            'amount' => 10.00,
+            'expense_date' => now()->subDay()->toDateString(),
+            'cost_center' => 'CC-101',
+        ];
+
+        $this->post(route('expenses.store'), $payload)
+            ->assertRedirect(route('login'));
+    }
+
+    public function test_user_without_permission_cannot_store_expense(): void
+    {
+        $user = User::factory()->create();
+
+        $payload = [
+            'amount' => 10.00,
+            'expense_date' => now()->subDay()->toDateString(),
+            'cost_center' => 'CC-101',
+        ];
+
+        $this->actingAs($user)
+            ->post(route('expenses.store'), $payload)
+            ->assertForbidden();
+    }
+
+    public function test_user_cannot_store_expense_with_too_high_amount(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => 100000000.00,
+            'expense_date' => now()->subDay()->toDateString(),
+            'cost_center' => 'CC-101',
+        ];
+
+        $response = $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.index'), $payload);
+
+        $response->assertRedirect(route('expenses.create'));
+        $response->assertSessionHasErrors(['amount']);
+        $this->assertDatabaseCount('expenses', 0);
+    }
+
+    public function test_user_cannot_store_expense_with_invalid_date(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => 10.00,
+            'expense_date' => 'invalid-date',
+            'cost_center' => 'CC-101',
+        ];
+
+        $response = $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.store'), $payload);
+
+        $response->assertRedirect(route('expenses.create'));
+        $response->assertSessionHasErrors(['expense_date']);
+        $this->assertDatabaseCount('expenses', 0);
+    }
+
+    public function test_user_cannot_store_expense_with_invalid_cost_center(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => 10.00,
+            'expense_date' => now()->subDay()->toDateString(),
+            'cost_center' => str_repeat('X', 60),
+        ];
+
+        $response = $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.store'), $payload);
+
+        $response->assertRedirect(route('expenses.create'));
+        $response->assertSessionHasErrors(['cost_center']);
+        $this->assertDatabaseCount('expenses', 0);
+    }
+
+    public function test_user_cannot_store_expense_with_invalid_status(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => 10.00,
+            'expense_date' => now()->subDay()->toDateString(),
+            'cost_center' => 'CC-101',
+            'status' => 'invalid-status',
+        ];
+
+        $response = $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.store'), $payload);
+
+        $response->assertRedirect(route('expenses.create'));
+        $response->assertSessionHasErrors(['status']);
+        $this->assertDatabaseCount('expenses', 0);
+    }
+
+    public function test_user_cannot_store_expense_with_invalid_user_id(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => 10.00,
+            'expense_date' => now()->subDay()->toDateString(),
+            'cost_center' => 'CC-101',
+            'user_id' => 999,
+        ];
+
+        $response = $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.store'), $payload);
+
+        $response->assertRedirect(route('expenses.create'));
+        $response->assertSessionHasErrors(['user_id']);
+        $this->assertDatabaseCount('expenses', 0);
+    }
+
+    public function test_user_cannot_store_expense_with_negative_amount(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => -10.00,
+            'expense_date' => now()->subDay()->toDateString(),
+            'cost_center' => 'CC-101',
+        ];
+
+        $response = $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.store'), $payload);
+
+        $response->assertRedirect(route('expenses.create'));
+        $response->assertSessionHasErrors(['amount']);
+        $this->assertDatabaseCount('expenses', 0);
+    }
+
+    public function test_user_cannot_store_expense_with_zero_amount(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => 0.00,
+            'expense_date' => now()->subDay()->toDateString(),
+            'cost_center' => 'CC-101',
+        ];
+
+        $response = $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.store'), $payload);
+
+        $response->assertRedirect(route('expenses.create'));
+        $response->assertSessionHasErrors(['amount']);
+        $this->assertDatabaseCount('expenses', 0);
+    }
+
+    public function test_user_cannot_store_expense_with_date_before_90_days(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => 10.00,
+            'expense_date' => now()->subDays(91)->toDateString(),
+            'cost_center' => 'CC-101',
+        ];
+
+        $response = $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.store'), $payload);
+
+        $response->assertRedirect(route('expenses.create'));
+        $response->assertSessionHasErrors(['expense_date']);
+        $this->assertDatabaseCount('expenses', 0);
+    }
+
+    public function test_user_cannot_store_expense_with_date_after_today(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => 10.00,
+            'expense_date' => now()->addDay()->toDateString(),
+            'cost_center' => 'CC-101',
+        ];
+
+        $response = $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.store'), $payload);
+
+        $response->assertRedirect(route('expenses.create'));
+        $response->assertSessionHasErrors(['expense_date']);
+        $this->assertDatabaseCount('expenses', 0);
+    }
+
+    public function test_amount_string_without_decimal_is_converted_to_decimal(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => '100',
+            'expense_date' => now()->subDay()->toDateString(),
+            'cost_center' => 'CC-101',
+        ];
+
+        $response = $this->actingAs($user)
+            ->post(route('expenses.store'), $payload);
+
+        $response->assertRedirect(route('expenses.index'));
+        $this->assertDatabaseHas('expenses', [
+            'user_id' => $user->id,
+            'amount' => 100.00,
+            'expense_date' => $payload['expense_date'],
+            'cost_center' => 'CC-101',
+            'status' => 'pending',
+        ]);
+    }
+
+    public function test_employee_cannot_store_expense_with_valid_data_and_status_approved(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => 123.45,
+            'expense_date' => now()->subDay()->toDateString(),
+            'cost_center' => 'CC-101',
+            'status' => 'approved',
+        ];
+
+        $response = $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.store'), $payload);
+
+        $response->assertRedirect(route('expenses.create'));
+        $response->assertSessionHasErrors(['status']);
+        $this->assertDatabaseCount('expenses', 0);
+    }
+
+    public function test_employee_cannot_store_expense_with_valid_data_and_status_rejected(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => 123.45,
+            'expense_date' => now()->subDay()->toDateString(),
+            'cost_center' => 'CC-101',
+            'status' => 'rejected',
+        ];
+
+        $response = $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.store'), $payload);
+
+        $response->assertRedirect(route('expenses.create'));
+        $response->assertSessionHasErrors(['status']);
+        $this->assertDatabaseCount('expenses', 0);
+    }
+
+    public function test_employee_cannot_store_expense_with_valid_data_and_status_pending(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => 123.45,
+            'expense_date' => now()->subDay()->toDateString(),
+            'cost_center' => 'CC-101',
+            'status' => 'pending',
+        ];
+
+        $response = $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.store'), $payload);
+
+        $response->assertRedirect(route('expenses.create'));
+        $response->assertSessionHasErrors(['status']);
+        $this->assertDatabaseCount('expenses', 0);
+    }
+
+    public function test_employee_cannot_store_expense_without_cost_center(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => 123.45,
+            'expense_date' => now()->subDay()->toDateString(),
+        ];
+
+        $response = $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.store'), $payload);
+
+        $response->assertRedirect(route('expenses.create'));
+        $response->assertSessionHasErrors(['cost_center']);
+        $this->assertDatabaseCount('expenses', 0);
+    }
+
+    public function test_employee_cannot_store_expense_without_expense_date(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => 123.45,
+            'cost_center' => 'CC-101',
+        ];
+
+        $response = $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.store'), $payload);
+
+        $response->assertRedirect(route('expenses.create'));
+        $response->assertSessionHasErrors(['expense_date']);
+        $this->assertDatabaseCount('expenses', 0);
     }
 }
