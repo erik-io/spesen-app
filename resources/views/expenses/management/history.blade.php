@@ -17,15 +17,32 @@
                         </div>
                     @endif
 
-
                     <div class="flex justify-end items-center mb-4 space-x-4">
-                        {{-- Per Page Form --}}
+                        {{-- GET-Form --}}
                         <form method="GET" action="{{ route('expenses.management.history') }}"
                               class="flex items-center space-x-2">
                             {{-- Hidden inputs to preserve sorting --}}
                             <input type="hidden" name="sort_by" value="{{ request('sort_by', 'created_at') }}">
                             <input type="hidden" name="sort_direction" value="{{ request('sort_direction', 'desc') }}">
 
+                            {{-- Filter --}}
+                            <label for="status" class="block text-sm font-medium text-gray-700">
+                                {{ __('Filter') }}
+                            </label>
+                            <select name="status" id="status"
+                                    class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+                                    onchange="this.form.submit()">
+                                @php
+                                    $statuses = ['all' => __('All'), 'pending' => __('Pending'), 'approved' => __('Approved'), 'rejected' => __('Rejected')];
+                                @endphp
+                                @foreach($statuses as $key => $label)
+                                    <option value="{{ $key }}" {{ request('status', 'all') === $key ? 'selected' : '' }}>
+                                        {{ $label }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            {{-- Per Page --}}
                             <label for="per_page" class="block text-sm font-medium text-gray-700">
                                 {{ __('Show') }}
                             </label>
