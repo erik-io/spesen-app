@@ -129,10 +129,13 @@
                                     <td class="px-3 py-4 text-center text-sm font-medium">
                                         @if($expense->status == 'rejected' && $expense->rejection_comment !== null && $expense->rejection_comment !== '')
                                             <button
-                                                @click='open = !open'
-                                                class='inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 text-sm font-medium'>
-                                                <span x-show='!open' x-cloak>{{ __('View Reason') }}</span>
-                                                <span x-show='open' x-cloak>{{ __('Hide Reason') }}</span>
+                                                @click="open = !open"
+                                                type="button"
+                                                class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-200 transition duration-150 ease-in-out"
+                                                title="{{ __('View Reason') }}">
+                                                {{-- Icon changes style if open (optional visual feedback) --}}
+                                                <i class="fa-solid fa-comment-dots fa-lg"
+                                                   :class="{'text-gray-400': open}"></i>
                                             </button>
                                         @endif
                                     </td>
