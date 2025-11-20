@@ -44,7 +44,7 @@ class StoreExpenseRequest extends FormRequest
             $amount = $this->input('amount');
 
             // Convert comma to period
-            $amount = str_replace(',', '.', $amount);
+            $amount = str_replace(',', '.', (string)$amount);
 
             // Check if it's numeric and appears to be an integer (no decimal point)
             if (is_numeric($amount) && strpos($amount, '.') === false) {
