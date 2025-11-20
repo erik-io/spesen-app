@@ -84,9 +84,8 @@
                                     class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     <x-sortable-link sortBy="status" label="{{ __('Status') }}"/>
                                 </th>
-                                <th scope="col" class="px-3 py-3 text-right">
-                                    <span class="sr-only">Reason</span>
-                                </th>
+
+                                <th class="px-2 py-3"></th>
                             </tr>
                             </thead>
 
