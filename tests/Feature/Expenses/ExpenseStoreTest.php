@@ -60,6 +60,30 @@ class ExpenseStoreTest extends TestCase
         ]);
     }
 
+    public function test_amount_string_with_one_decimal_is_converted_to_decimal(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $payload = [
+            'amount' => '100.5',
+            'expense_date' => now()->subDay()->toDateString(),
+            'cost_center' => 'CC-303',
+        ];
+
+        $this->actingAs($user)
+            ->from(route('expenses.create'))
+            ->post(route('expenses.store'), $payload)
+            ->assertRedirect(route('expenses.index'));
+
+        $this->assertDatabaseHas('expenses', [
+            'user_id' => $user->id,
+            'amount' => 100.50,
+            'expense_date' => $payload['expense_date'],
+            'cost_center' => 'CC-303',
+        ]);
+    }
+
     public function test_employee_cannot_store_expense_with_invalid_data(): void
     {
         $user = User::factory()->create();
