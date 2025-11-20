@@ -46,10 +46,10 @@ class StoreExpenseRequest extends FormRequest
             // Convert comma to period
             $amount = str_replace(',', '.', (string)$amount);
 
-            // Check if it's numeric and appears to be an integer (no decimal point)
-            if (is_numeric($amount) && strpos($amount, '.') === false) {
-                // Append '.00'
-                $amount .= '.00';
+            // Format the number to 2 decimal places
+            // This fixes the issue where a number failed validation because of a missing decimal place
+            if (is_numeric($amount)) {
+                $amount = number_format((float)$amount, 2, '.', '');
             }
 
             // Merge the manipulated value back into the request
