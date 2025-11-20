@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Expense;
@@ -32,7 +34,7 @@ class ExpenseFactory extends Factory
     /** Indicate that the expense is pending */
     public function pending(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'status' => 'pending',
             'rejection_comment' => null,
         ]);
@@ -41,7 +43,7 @@ class ExpenseFactory extends Factory
     /** Indicate that the expense is approved */
     public function approved(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'status' => 'approved',
             'rejection_comment' => null,
         ]);
@@ -50,7 +52,7 @@ class ExpenseFactory extends Factory
     /** Indicate that the expense is rejected */
     public function rejected(string $comment = null): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'status' => 'rejected',
             'rejection_comment' => $comment ?? $this->faker->paragraph(),
         ]);

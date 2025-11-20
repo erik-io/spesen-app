@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseManagementController;
 use App\Http\Controllers\ProfileController;

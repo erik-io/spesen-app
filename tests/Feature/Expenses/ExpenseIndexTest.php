@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Expenses;
 
 use App\Models\Expense;
@@ -85,7 +87,7 @@ class ExpenseIndexTest extends TestCase
             $this->assertCount(10, $paginator->items());
             $this->assertEquals(15, $paginator->total());
             // Ensure all expenses belong to the correct employee
-            return collect($paginator->items())->every(fn($expense) => $expense->user_id === $employee->id);
+            return collect($paginator->items())->every(fn ($expense) => $expense->user_id === $employee->id);
         });
     }
 
@@ -114,7 +116,7 @@ class ExpenseIndexTest extends TestCase
             // Default sort is created_at desc (newest first)
             $items = $paginator->items();
             $this->assertGreaterThanOrEqual($items[1]['created_at'], $items[0]['created_at']);
-            return collect($items)->every(fn($e) => $e->user_id === $employee->id);
+            return collect($items)->every(fn ($e) => $e->user_id === $employee->id);
         });
     }
 

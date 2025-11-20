@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Expenses;
 
 use App\Models\Expense;
@@ -151,7 +153,7 @@ class ExpenseManagementTest extends TestCase
             ->get(route('expenses.management.history', ['status' => 'approved']))
             ->assertOk()
             ->assertViewHas('expenses', function ($paginator) {
-                return collect($paginator->items())->every(fn($e) => $e->status === 'approved');
+                return collect($paginator->items())->every(fn ($e) => $e->status === 'approved');
             });
     }
 
