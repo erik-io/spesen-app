@@ -1,15 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Submit New Expense Report') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 {{-- Initialize Alpine data context for the form inputs --}}
-                <div class="p-6 text-gray-900"
+                <div class="p-6 text-gray-900 dark:text-gray-100"
                      x-data="{
                          amountInput: '{{ old('amount', '') }}',
                          dateInput: '{{ old('expense_date', '') }}',
@@ -18,7 +18,8 @@
 
                     {{-- Validation Errors --}}
                     @if ($errors->any())
-                        <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                        <div
+                            class="mb-4 p-4 bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-200 rounded">
                             <strong>{{ __('Error') }}</strong>
                             <ul>
                                 @foreach ($errors->all() as $error)
@@ -75,8 +76,8 @@
                         </div>
 
                         {{-- Required fields info text --}}
-                        <div class="mt-4 text-sm text-gray-600">
-                            <span class="text-red-500">*</span> {{ __('Indicates required fields') }}
+                        <div class="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                            <span class="text-red-500 dark:text-red-400">*</span> {{ __('Indicates required fields') }}
                         </div>
 
                         {{-- Submit Button --}}
@@ -90,28 +91,32 @@
                     {{-- Confirmation Modal --}}
                     <x-modal name="confirm-submission">
                         <div class="p-6">
-                            <h2 class="text-lg font-medium text-gray-900">
+                            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                                 {{ __('Confirm Submission') }}
                             </h2>
-                            <p class="mt-2 text-base text-gray-600">
+                            <p class="mt-2 text-base text-gray-600 dark:text-gray-300">
                                 {{ __('Are you sure you want to submit this expense report? You cannot edit it after submission.') }}
                             </p>
 
                             {{-- Dynamic Data Display --}}
-                            <div class="mt-4 space-y-2 text-sm text-gray-800 border-t border-b py-4">
+                            <div
+                                class="mt-4 space-y-2 text-sm text-gray-800 dark:text-gray-200 border-t border-b border-gray-200 dark:border-gray-600 py-4">
                                 <div class="flex justify-between">
-                                    <span class="font-medium text-gray-600">{{ __('Amount') }}:</span>
+                                    <span
+                                        class="font-medium text-gray-600 dark:text-gray-400">{{ __('Amount') }}:</span>
                                     {{-- Display formatted amount, handling commas and ensuring 2 decimal places --}}
-                                    <span class="font-bold"
+                                    <span class="font-bold text-gray-900 dark:text-gray-100"
                                           x-text="`${parseFloat(String(amountInput).replace(',', '.')).toFixed(2)} EUR`"></span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span class="font-medium text-gray-600">{{ __('Date') }}:</span>
-                                    <span class="font-bold" x-text="dateInput || '{{ __('Not specified') }}'"></span>
+                                    <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Date') }}:</span>
+                                    <span class="font-bold text-gray-900 dark:text-gray-100"
+                                          x-text="dateInput || '{{ __('Not specified') }}'"></span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span class="font-medium text-gray-600">{{ __('Cost Center') }}:</span>
-                                    <span class="font-bold"
+                                    <span
+                                        class="font-medium text-gray-600 dark:text-gray-400">{{ __('Cost Center') }}:</span>
+                                    <span class="font-bold text-gray-900 dark:text-gray-100"
                                           x-text="costCenterInput || '{{ __('Not specified') }}'"></span>
                                 </div>
                             </div>
