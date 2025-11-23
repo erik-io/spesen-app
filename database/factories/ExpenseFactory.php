@@ -25,7 +25,7 @@ class ExpenseFactory extends Factory
             'user_id' => User::factory(),
             'expense_date' => $this->faker->dateTimeBetween(now()->subDays(Expense::MAX_SUBMISSION_AGE_DAYS), 'now')->format('Y-m-d'),
             'cost_center' => $this->faker->bothify('CC-###'),
-            'amount' => $this->faker->randomFloat(Expense::AMOUNT_SCALE, 10, 5000),
+            'amount' => $this->faker->randomFloat(Expense::AMOUNT_SCALE, 10, 1200),
             'status' => $status,
             'rejection_comment' => $status === Expense::STATUS_REJECTED ? $this->faker->paragraph() : null,
         ];
