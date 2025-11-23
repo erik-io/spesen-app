@@ -110,7 +110,7 @@
                                         class="font-medium text-gray-600 dark:text-gray-400">{{ __('Amount') }}:</span>
                                     {{-- Display formatted amount, handling commas and ensuring 2 decimal places --}}
                                     <span class="font-bold text-gray-900 dark:text-gray-100"
-                                          x-text="`${parseFloat(String(amountInput).replace(',', '.')).toFixed(2)} EUR`"></span>
+                                          x-text="`${parseFloat(String(amountInput).replace(',', '.')).toFixed(2)} {{ __('EUR') }}`"></span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Date') }}:</span>

@@ -61,7 +61,7 @@
                                 {{-- ID --}}
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                    ID
+                                    {{ __('ID') }}
                                 </th>
                                 {{-- Submission Date --}}
                                 <th scope="col"
@@ -126,7 +126,7 @@
                                                 @elseif($expense->status == Expense::STATUS_REJECTED) bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200
                                                 @endif">
                                                 {{-- Capitalize the first character --}}
-                                                {{ ucfirst($expense->status) }}
+                                                {{ __(ucfirst($expense->status)) }}
                                             </span>
                                     </td>
                                     {{-- Action Cell (Show/Hide Rejection Reason) --}}

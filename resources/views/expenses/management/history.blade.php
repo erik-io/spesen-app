@@ -81,7 +81,7 @@
                                 {{-- ID --}}
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                    ID
+                                    {{ __('ID') }}
                                 </th>
                                 {{-- Employee --}}
                                 <th scope="col"
@@ -116,7 +116,7 @@
                                 {{-- Details --}}
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                    Details
+                                    {{ __('Details') }}
                                 </th>
                             </tr>
                             </thead>
@@ -155,7 +155,7 @@
                                                 @elseif($expense->status == Expense::STATUS_APPROVED) bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200
                                                 @elseif($expense->status == Expense::STATUS_REJECTED) bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200
                                                 @endif">
-                                                {{ ucfirst($expense->status) }}
+                                                {{ __(ucfirst($expense->status)) }}
                                             </span>
                                     </td>
                                     {{-- Action Button (Redirect to Expense Details) --}}

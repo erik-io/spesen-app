@@ -37,11 +37,11 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                         {{-- Expense Details --}}
                         <div>
-                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Details</h3>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ __('Details') }}</h3>
                             <dl class="mt-2 space-y-2">
                                 {{-- Employee Name --}}
                                 <div class="flex justify-between">
-                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Name</dt>
+                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">{{ __('Name') }}</dt>
                                     <dd class="text-base text-gray-900 dark:text-gray-100">
                                         {{ $expense->user->name }}
                                         (<a href="mailto:{{ $expense->user->email }}"
@@ -50,37 +50,37 @@
                                 </div>
                                 {{-- Expense Date --}}
                                 <div class="flex justify-between">
-                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Expense Date</dt>
+                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">{{ __('Expense Date') }}</dt>
                                     <dd class="text-base text-gray-900 dark:text-gray-100">{{ $expense->expense_date?->format('d.m.Y') }}</dd>
                                 </div>
                                 {{-- Submission Date --}}
                                 <div class="flex justify-between">
-                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Submission Date
+                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">{{ __('Submission Date') }}
                                     </dt>
                                     <dd class="text-base text-gray-900 dark:text-gray-100">{{ $expense->created_at?->format('d.m.Y H:i') }}</dd>
                                 </div>
                                 {{-- Cost Center --}}
                                 <div class="flex justify-between">
-                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Cost Center</dt>
+                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">{{ __('Cost Center') }}</dt>
                                     <dd class="text-base text-gray-900 dark:text-gray-100">{{ $expense->cost_center }}</dd>
                                 </div>
                                 {{-- Amount --}}
                                 <div class="flex justify-between">
-                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Amount</dt>
+                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">{{ __('Amount') }}</dt>
                                     <dd class="text-base font-bold text-gray-900 dark:text-gray-100">{{ number_format($expense->amount, 2, ',', '.') }}
                                         €
                                     </dd>
                                 </div>
                                 {{-- Status --}}
                                 <div class="flex justify-between">
-                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status</dt>
+                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">{{ __('Status') }}</dt>
                                     <dd class="text-base text-gray-900 dark:text-gray-100">
                                          <span class="px-2 inline-flex text-sm font-medium leading-5 rounded-full
                                                 @if($expense->status == Expense::STATUS_PENDING) bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200
                                                 @elseif($expense->status == Expense::STATUS_APPROVED) bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200
                                                 @elseif($expense->status == Expense::STATUS_REJECTED) bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200
                                                 @endif">
-                                                {{ ucfirst($expense->status) }}
+                                                {{ __(ucfirst($expense->status)) }}
                                          </span>
                                     </dd>
                                 </div>

@@ -20,7 +20,7 @@ class ExpenseController extends Controller
     public function store(StoreExpenseRequest $request)
     {
         auth()->user()->expenses()->create($request->validated());
-        return redirect()->route('expenses.index')->with('success', 'Expense created successfully.');
+        return redirect()->route('expenses.index')->with('success', __('Expense created successfully.'));
     }
 
     /**
