@@ -20,14 +20,14 @@ class ExpenseFactory extends Factory
      */
     public function definition(): array
     {
-        $status = $this->faker->randomElement(['pending', 'approved', 'rejected']);
+        $status = $this->faker->randomElement(Expense::STATUSES);
         return [
             'user_id' => User::factory(),
-            'expense_date' => $this->faker->dateTimeBetween('-90 days', 'now')->format('Y-m-d'),
+            'expense_date' => $this->faker->dateTimeBetween(now()->subDays(Expense::MAX_SUBMISSION_AGE_DAYS), 'now')->format('Y-m-d'),
             'cost_center' => $this->faker->bothify('CC-###'),
-            'amount' => $this->faker->randomFloat(2, 10, 1000),
+            'amount' => $this->faker->randomFloat(Expense::AMOUNT_SCALE, 10, 5000),
             'status' => $status,
-            'rejection_comment' => $status === 'rejected' ? $this->faker->paragraph() : null,
+            'rejection_comment' => $status === Expense::STATUS_REJECTED ? $this->faker->paragraph() : null,
         ];
     }
 
@@ -35,7 +35,7 @@ class ExpenseFactory extends Factory
     public function pending(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => 'pending',
+            'status' => Expense::STATUS_PENDING,
             'rejection_comment' => null,
         ]);
     }
@@ -44,7 +44,7 @@ class ExpenseFactory extends Factory
     public function approved(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => 'approved',
+            'status' => Expense::STATUS_APPROVED,
             'rejection_comment' => null,
         ]);
     }
@@ -53,7 +53,7 @@ class ExpenseFactory extends Factory
     public function rejected(string $comment = null): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => 'rejected',
+            'status' => Expense::STATUS_REJECTED,
             'rejection_comment' => $comment ?? $this->faker->paragraph(),
         ]);
     }

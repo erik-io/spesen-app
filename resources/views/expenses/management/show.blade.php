@@ -1,3 +1,4 @@
+@use('App\Models\Expense')
 <x-app-layout>
     <x-slot name="title">
         {{ __('Expense Report') }} #{{ $expense->id }}
@@ -75,9 +76,9 @@
                                     <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status</dt>
                                     <dd class="text-base text-gray-900 dark:text-gray-100">
                                          <span class="px-2 inline-flex text-sm font-medium leading-5 rounded-full
-                                                @if($expense->status == 'pending') bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200
-                                                @elseif($expense->status == 'approved') bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200
-                                                @elseif($expense->status == 'rejected') bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200
+                                                @if($expense->status == Expense::STATUS_PENDING) bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200
+                                                @elseif($expense->status == Expense::STATUS_APPROVED) bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200
+                                                @elseif($expense->status == Expense::STATUS_REJECTED) bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200
                                                 @endif">
                                                 {{ ucfirst($expense->status) }}
                                          </span>
@@ -89,10 +90,10 @@
                         {{-- Action Area --}}
                         <div x-data="{
                             showRejectForm: {{ $errors->has('rejection_comment') ? 'true' : 'false' }},
-                            maxChars: 5000,
+                            maxChars: {{ Expense::MAX_REJECTION_COMMENT_LENGTH }},
                             comment: @js(old('rejection_comment'))
                             }">
-                            @if ($expense->status == 'pending')
+                            @if ($expense->status == Expense::STATUS_PENDING)
                                 {{-- Button Container (Approve / Reject) --}}
                                 <div x-show="!showRejectForm" x-transition:enter class="space-y-2">
                                     <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ __('Actions') }}</h3>
@@ -127,7 +128,7 @@
                                                   rows="4"
                                                   class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm min-h-32"
                                                   x-model="comment"
-                                                  maxlength="5000"
+                                                  maxlength={{ Expense::MAX_REJECTION_COMMENT_LENGTH }}
                                                   required>{{ old('rejection_comment') }}</textarea>
                                         <x-input-error :messages="$errors->get('rejection_comment')" class="mt-2"/>
 
@@ -255,7 +256,7 @@
                                     </form>
                                 </x-modal>
                                 {{-- Show rejection comment if it's rejected --}}
-                            @elseif ($expense->status == 'rejected' && $expense->rejection_comment !== null && $expense->rejection_comment !== '')
+                            @elseif ($expense->status == Expense::STATUS_REJECTED && $expense->rejection_comment !== null && $expense->rejection_comment !== '')
                                 <h3 class="text-lg font-medium text-red-900 dark:text-red-300">{{ __('Reason for Rejection') }}</h3>
                                 <div
                                     class="mt-2 p-4 bg-gray-50 dark:bg-gray-700 border-l-4 border-red-400 dark:border-red-600">
@@ -264,7 +265,7 @@
                                     </p>
                                 </div>
                                 {{-- Show a note if it's already approved --}}
-                            @elseif ($expense->status == 'approved')
+                            @elseif ($expense->status == Expense::STATUS_APPROVED)
                                 <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ __('Status') }}</h3>
                                 <div
                                     class="mt-2 p-4 bg-gray-50 dark:bg-gray-700 border-l-4 border-green-400 dark:border-green-600">

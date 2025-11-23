@@ -1,6 +1,7 @@
+@use('App\Models\Expense')
 <x-app-layout>
     <x-slot name="title">
-        {{ __('Submit New Expense Report') }} #{{ $expense->id }}
+        {{ __('Submit New Expense Report') }}
     </x-slot>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -62,7 +63,7 @@
                             <x-text-input id="expense_date" class="block mt-1 w-full" type="date" name="expense_date"
                                           x-model="dateInput"
                                           required max="{{ now()->toDateString() }}"
-                                          min="{{ now()->subDays(90)->toDateString() }}"/>
+                                          min="{{ now()->subDays(Expense::MAX_SUBMISSION_AGE_DAYS)->toDateString() }}"/>
                             <x-input-error :messages="$errors->get('expense_date')" class="mt-2"/>
                         </div>
 

@@ -1,3 +1,4 @@
+@use('App\Models\Expense')
 <x-app-layout>
     <x-slot name="title">
         {{ __('Expense History') }}
@@ -37,7 +38,7 @@
                                     class="border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-200 dark:focus:ring-indigo-800 focus:ring-opacity-50 rounded-md shadow-sm"
                                     onchange="this.form.submit()">
                                 @php
-                                    $statuses = ['all' => __('All'), 'pending' => __('Pending'), 'approved' => __('Approved'), 'rejected' => __('Rejected')];
+                                    $statuses = ['all' => __('All'), Expense::STATUS_PENDING => __('Pending'), Expense::STATUS_APPROVED => __('Approved'), Expense::STATUS_REJECTED => __('Rejected')];
                                 @endphp
                                 @foreach($statuses as $key => $label)
                                     <option
@@ -150,9 +151,9 @@
                                     {{-- Status --}}
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
                                             <span class="px-2 inline-flex text-sm font-medium leading-5 rounded-full
-                                                @if($expense->status == 'pending') bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200
-                                                @elseif($expense->status == 'approved') bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200
-                                                @elseif($expense->status == 'rejected') bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200
+                                                @if($expense->status == Expense::STATUS_PENDING) bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200
+                                                @elseif($expense->status == Expense::STATUS_APPROVED) bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200
+                                                @elseif($expense->status == Expense::STATUS_REJECTED) bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200
                                                 @endif">
                                                 {{ ucfirst($expense->status) }}
                                             </span>

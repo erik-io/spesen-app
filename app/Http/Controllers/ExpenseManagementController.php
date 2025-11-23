@@ -14,7 +14,7 @@ class ExpenseManagementController extends Controller
 {
     public function index(Request $request): View
     {
-        $expenses = $this->getPaginatedExpenses($request, 'pending');
+        $expenses = $this->getPaginatedExpenses($request, Expense::STATUS_PENDING);
         return view('expenses.management.index', compact('expenses'));
     }
 
@@ -51,11 +51,11 @@ class ExpenseManagementController extends Controller
 
         $query = Expense::with('user');
 
-        if ($statusScope === 'pending') {
-            $query->where('status', 'pending');
+        if ($statusScope === Expense::STATUS_PENDING) {
+            $query->where('status', Expense::STATUS_PENDING);
         } elseif ($statusScope === 'all') {
             $status = $request->query('status');
-            if ($status && in_array($status, ['pending', 'approved', 'rejected'])) {
+            if ($status && in_array($status, Expense::STATUSES)) {
                 $query->where('status', $status);
             }
         }
@@ -72,14 +72,14 @@ class ExpenseManagementController extends Controller
 
     public function approve(Expense $expense): RedirectResponse
     {
-        $expense->update(['status' => 'approved', 'rejection_comment' => null]); // Clear any previous rejection comment
+        $expense->update(['status' => Expense::STATUS_APPROVED, 'rejection_comment' => null]); // Clear any previous rejection comment
 
         return redirect()->route('expenses.management.index')->with('success', 'Expense approved successfully.');
     }
 
     public function reject(RejectExpenseRequest $request, Expense $expense): RedirectResponse
     {
-        $expense->update(['status' => 'rejected', 'rejection_comment' => $request->validated('rejection_comment')]);
+        $expense->update(['status' => Expense::STATUS_REJECTED, 'rejection_comment' => $request->validated('rejection_comment')]);
 
         return redirect()->route('expenses.management.index')->with('success', 'Expense rejected successfully.');
     }

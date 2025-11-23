@@ -1,3 +1,4 @@
+@use(App\Models\Expense)
 <x-app-layout>
     <x-slot name="title">
         {{ __('My Expense Reports') }}
@@ -120,9 +121,9 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
                                             <span class="px-2 inline-flex text-sm font-medium leading-5 rounded-full
                                                 {{-- 'approved' (green), 'pending' (yellow), 'rejected' (red) --}}
-                                                @if($expense->status == 'pending') bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200
-                                                @elseif($expense->status == 'approved') bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200
-                                                @elseif($expense->status == 'rejected') bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200
+                                                @if($expense->status == Expense::STATUS_PENDING) bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200
+                                                @elseif($expense->status == Expense::STATUS_APPROVED) bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200
+                                                @elseif($expense->status == Expense::STATUS_REJECTED) bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200
                                                 @endif">
                                                 {{-- Capitalize the first character --}}
                                                 {{ ucfirst($expense->status) }}
@@ -130,7 +131,7 @@
                                     </td>
                                     {{-- Action Cell (Show/Hide Rejection Reason) --}}
                                     <td class="px-3 py-4 text-center text-sm font-medium">
-                                        @if($expense->status == 'rejected' && $expense->rejection_comment !== null && $expense->rejection_comment !== '')
+                                        @if($expense->status == Expense::STATUS_REJECTED && $expense->rejection_comment !== null && $expense->rejection_comment !== '')
                                             <button
                                                 @click="open = !open"
                                                 type="button"
@@ -144,7 +145,7 @@
                                     </td>
                                 </tr>
                                 {{-- Rejection Comment (hidden by default) --}}
-                                @if($expense->status == 'rejected' && $expense->rejection_comment !== null)
+                                @if($expense->status == Expense::STATUS_REJECTED && $expense->rejection_comment !== null)
                                     <tr x-show="open" x-transition x-cloak>
                                         <td colspan="7" class="p-0">
                                             <div

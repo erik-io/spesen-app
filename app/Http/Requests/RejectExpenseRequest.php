@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Models\Expense;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,7 +26,13 @@ class RejectExpenseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'rejection_comment' => 'required|string|max:5000|filled'
+            'rejection_comment' =>
+                [
+                    'required',
+                    'string',
+                    'filled',
+                    'max:' . Expense::MAX_REJECTION_COMMENT_LENGTH,
+                ]
         ];
     }
 }

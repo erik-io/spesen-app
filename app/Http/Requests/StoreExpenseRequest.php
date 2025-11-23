@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Models\Expense;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,9 +26,23 @@ class StoreExpenseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'amount' => 'required|decimal:2|min:0.01|max:99999999.99',
-            'expense_date' => 'required|date|before_or_equal:today|after_or_equal:' . now()->subDays(90)->toDateString(),
-            'cost_center' => 'required|string|max:50',
+            'amount' => [
+                'required',
+                'decimal:' . Expense::AMOUNT_SCALE,
+                'min:0.01',
+                'max:' . pow(10, Expense::AMOUNT_PRECISION - Expense::AMOUNT_SCALE) - 0.01,
+            ],
+            'expense_date' => [
+                'required',
+                'date',
+                'before_or_equal:today',
+                'after_or_equal:' . now()->subDays(Expense::MAX_SUBMISSION_AGE_DAYS)->toDateString(),
+            ],
+            'cost_center' => [
+                'required',
+                'string',
+                'max:' . Expense::MAX_COST_CENTER_LENGTH,
+            ],
             'status' => 'prohibited',
             'user_id' => 'prohibited',
         ];
@@ -49,7 +64,7 @@ class StoreExpenseRequest extends FormRequest
             // Format the number to 2 decimal places
             // This fixes the issue where a number failed validation because of a missing decimal place
             if (is_numeric($amount)) {
-                $amount = number_format((float)$amount, 2, '.', '');
+                $amount = number_format((float)$amount, Expense::AMOUNT_SCALE, '.', '');
             }
 
             // Merge the manipulated value back into the request
