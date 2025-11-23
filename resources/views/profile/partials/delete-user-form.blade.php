@@ -5,7 +5,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('auth.profile.warning') }}
+            {{ __('auth.profile.delete_account.warning') }}
         </p>
     </header>
 
@@ -20,11 +20,11 @@
             @method('delete')
 
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                {{ __('auth.profile.confirm_question') }}
+                {{ __('auth.profile.delete_account.confirm_question') }}
             </h2>
 
             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                {{ __('auth.profile.confirm_final') }}
+                {{ __('auth.profile.delete_account.confirm_final') }}
             </p>
 
             <div class="mt-6">
