@@ -75,14 +75,14 @@ class ExpenseManagementController extends Controller
     {
         $expense->update(['status' => Expense::STATUS_APPROVED, 'rejection_comment' => null]); // Clear any previous rejection comment
 
-        return redirect()->route('expenses.management.index')->with('success', __('Expense approved successfully.'));
+        return redirect()->route('expenses.management.index')->with('success', __('messages.feedback.approved'));
     }
 
     public function reject(RejectExpenseRequest $request, Expense $expense): RedirectResponse
     {
         $expense->update(['status' => Expense::STATUS_REJECTED, 'rejection_comment' => $request->validated('rejection_comment')]);
 
-        return redirect()->route('expenses.management.index')->with('success', __('Expense rejected successfully.'));
+        return redirect()->route('expenses.management.index')->with('success', __('messages.feedback.rejected'));
     }
 
     public function history(Request $request): View

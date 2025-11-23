@@ -96,10 +96,10 @@
                     <x-modal name="confirm-submission">
                         <div class="p-6">
                             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                {{ __('Confirm Submission') }}
+                                {{ __('modals.submission.title') }}
                             </h2>
                             <p class="mt-2 text-base text-gray-600 dark:text-gray-300">
-                                {{ __('Are you sure you want to submit this expense report? You cannot edit it after submission.') }}
+                                {{ __('modals.submission.body') }}
                             </p>
 
                             {{-- Dynamic Data Display --}}

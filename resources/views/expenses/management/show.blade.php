@@ -43,9 +43,13 @@
                                 <div class="flex justify-between">
                                     <dt class="text-base font-medium text-gray-500 dark:text-gray-400">{{ __('Name') }}</dt>
                                     <dd class="text-base text-gray-900 dark:text-gray-100">
-                                        {{ $expense->user->name }}
-                                        (<a href="mailto:{{ $expense->user->email }}"
-                                            class="text-indigo-600 dark:text-indigo-400 hover:underline">{{ $expense->user->email }}</a>)
+                                        {{ $expense->user?->name ?? __('messages.general.unknown_user') }}
+
+                                        @if($expense->user)
+                                            (<a href="mailto:{{ $expense->user->email }}"
+                                                class="text-indigo-600 dark:text-indigo-400 hover:underline">{{ $expense->user->email }}</a>
+                                            )
+                                        @endif
                                     </dd>
                                 </div>
                                 {{-- Expense Date --}}
@@ -153,10 +157,10 @@
                                     <x-modal :name="'confirm-rejection'">
                                         <div class="p-6">
                                             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                                {{ __('Confirm Rejection') }}
+                                                {{ __('modals.rejection.title') }}
                                             </h2>
                                             <p class="mt-2 text-base text-gray-600 dark:text-gray-300">
-                                                {{ __('Are you sure you want to reject this expense report? The employee will see the comment you provided.') }}
+                                                {{ __('modals.rejection.body') }}
                                             </p>
 
                                             {{-- Dynamic Data Display (Rejection) --}}
@@ -164,7 +168,8 @@
                                                 class="mt-4 space-y-2 text-sm text-gray-800 dark:text-gray-200 border-t border-b border-gray-200 dark:border-gray-600 py-4">
                                                 <div class="flex justify-between">
                                                     <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Employee') }}:</span>
-                                                    <span class="font-bold">{{ $expense->user->name }}</span>
+                                                    <span
+                                                        class="font-bold">{{ $expense->user?->name ?? __('messages.general.unknown_user') }}</span>
                                                 </div>
                                                 <div class="flex justify-between">
                                                     <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Amount') }}:</span>
@@ -213,10 +218,10 @@
                                         @csrf
                                         @method('PATCH')
                                         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                            {{ __('Confirm Approval') }}
+                                            {{ __('modals.approval.title') }}
                                         </h2>
                                         <p class="mt-2 text-base text-gray-600 dark:text-gray-300">
-                                            {{ __('Are you sure you want to approve this expense report?') }}
+                                            {{ __('modals.approval.body') }}
                                         </p>
 
                                         {{-- Dynamic Data Display (Approve) --}}
@@ -224,7 +229,8 @@
                                             class="mt-4 space-y-2 text-sm text-gray-800 dark:text-gray-200 border-t border-b border-gray-200 dark:border-gray-600 py-4">
                                             <div class="flex justify-between">
                                                 <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Employee') }}:</span>
-                                                <span class="font-bold">{{ $expense->user->name }}</span>
+                                                <span
+                                                    class="font-bold">{{ $expense->user?->name ?? __('messages.general.unknown_user') }}</span>
                                             </div>
                                             <div class="flex justify-between">
                                                 <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Amount') }}:</span>

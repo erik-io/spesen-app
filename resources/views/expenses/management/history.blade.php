@@ -130,7 +130,7 @@
                                     </td>
                                     {{-- Employee Name --}}
                                     <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-100">
-                                        {{ $expense->user->name }}
+                                        {{ $expense->user?->name ?? __('messages.general.unknown_user') }}
                                     </td>
                                     {{-- Submission Date --}}
                                     <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-100">
@@ -172,7 +172,7 @@
                                 <tr>
                                     <td colspan="8"
                                         class="px-6 py-4 whitespace-nowrap text-center text-gray-500 dark:text-gray-400">
-                                        {{ __('No expense reports found.') }}
+                                        {{ __('expenses.empty.all') }}
                                     </td>
                                 </tr>
                                 </tbody>
