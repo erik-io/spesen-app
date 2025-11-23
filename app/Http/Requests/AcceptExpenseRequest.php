@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use App\Models\Expense;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class RejectExpenseRequest extends FormRequest
+class AcceptExpenseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +20,19 @@ class RejectExpenseRequest extends FormRequest
     }
 
     /**
-     * Handle failed authorization for rejecting an expense.
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    /**
+     * Handle failed authorization for accepting an expense.
      *
      * @return void
      * @throws Illuminate\Http\Exceptions\HttpResponseException
@@ -40,23 +50,5 @@ class RejectExpenseRequest extends FormRequest
 
         // If the user is not authorized, fall back to the default behavior
         parent::failedAuthorization();
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
-    public function rules(): array
-    {
-        return [
-            'rejection_comment' =>
-                [
-                    'required',
-                    'string',
-                    'filled',
-                    'max:' . Expense::MAX_REJECTION_COMMENT_LENGTH,
-                ]
-        ];
     }
 }

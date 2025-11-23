@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AcceptExpenseRequest;
 use App\Http\Requests\RejectExpenseRequest;
 use App\Models\Expense;
 use Illuminate\Http\RedirectResponse;
@@ -70,7 +71,7 @@ class ExpenseManagementController extends Controller
         return view('expenses.management.show', compact('expense'));
     }
 
-    public function approve(Expense $expense): RedirectResponse
+    public function approve(AcceptExpenseRequest $request, Expense $expense): RedirectResponse
     {
         $expense->update(['status' => Expense::STATUS_APPROVED, 'rejection_comment' => null]); // Clear any previous rejection comment
 

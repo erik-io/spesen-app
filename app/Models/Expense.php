@@ -43,4 +43,14 @@ class Expense extends Model
     {
         return $this->belongsTo(User::class); // $expense->user
     }
+
+    /**
+     * Check if the expense is pending.
+     *
+     * @return bool
+     */
+    public function isPending(): bool
+    {
+        return $this->status === self::STATUS_PENDING;
+    }
 }
