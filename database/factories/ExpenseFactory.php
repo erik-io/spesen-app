@@ -57,4 +57,19 @@ class ExpenseFactory extends Factory
             'rejection_comment' => $comment ?? $this->faker->paragraph(),
         ]);
     }
+
+    /** Randomize the created_at date */
+    public function randomizeSubmissionDate(int $minDays = 0, int $maxDays = Expense::MAX_SUBMISSION_AGE_DAYS): static
+    {
+        if ($minDays > $maxDays) {
+            [$minDays, $maxDays] = [$maxDays, $minDays];
+        }
+
+        return $this->state(fn (array $attributes) => [
+            'created_at' => $this->faker->dateTimeBetween(
+                now()->subDays($maxDays),
+                now()->subDays($minDays)
+            ),
+        ]);
+    }
 }

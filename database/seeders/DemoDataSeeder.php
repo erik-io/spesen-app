@@ -40,18 +40,21 @@ class DemoDataSeeder extends Seeder
         Expense::factory()
             ->count(rand(3, 7))
             ->pending()
+            ->randomizeSubmissionDate()
             ->create(['user_id' => $user->id]);
 
         // Create approved expenses (history)
         Expense::factory()
             ->count(rand(5, 15))
             ->approved()
+            ->randomizeSubmissionDate(10, 365)
             ->create(['user_id' => $user->id]);
 
         // Create rejected expenses (history)
         Expense::factory()
             ->count(rand(3, 7))
             ->rejected()
+            ->randomizeSubmissionDate(30, 365)
             ->create(['user_id' => $user->id]);
     }
 }
