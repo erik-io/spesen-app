@@ -226,9 +226,9 @@ class ExpenseIndexTest extends TestCase
         $response = $this->actingAs($user)->get(route('expenses.index'));
 
         $response->assertOk();
-        $response->assertSee('Pending');
-        $response->assertSee('Approved');
-        $response->assertSee('Rejected');
+        $response->assertSee(__('Pending'));
+        $response->assertSee(__('Approved'));
+        $response->assertSee(__('Rejected'));
     }
 
     public function test_index_view_shows_rejection_comment_for_rejected_expenses(): void
@@ -255,7 +255,7 @@ class ExpenseIndexTest extends TestCase
         $response = $this->actingAs($user)->get(route('expenses.index'));
 
         $response->assertOk();
-        $response->assertSee(__('No expense reports found.'));
+        $response->assertSee(__('expenses.empty.all'));
     }
 
     public function test_index_view_has_create_new_expense_button(): void

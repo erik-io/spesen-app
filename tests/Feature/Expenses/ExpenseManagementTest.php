@@ -116,7 +116,7 @@ class ExpenseManagementTest extends TestCase
         $response = $this->actingAs($user)->get(route('expenses.management.index'));
 
         $response->assertOk();
-        $response->assertSee(__('No pending expense reports found.'));
+        $response->assertSee(__('expenses.empty.pending'));
     }
 
     public function test_management_index_view_has_view_history_button(): void
@@ -229,7 +229,7 @@ class ExpenseManagementTest extends TestCase
         $response = $this->actingAs($user)->get(route('expenses.management.history'));
 
         $response->assertOk();
-        $response->assertSee(__('No expense reports found.'));
+        $response->assertSee(__('expenses.empty.all'));
     }
 
     public function test_supervisor_can_view_approved_expenses_of_all_employees_in_history(): void
@@ -685,7 +685,7 @@ class ExpenseManagementTest extends TestCase
         $response->assertSee('123,45');
         $response->assertSee('15.01.2023');
         $response->assertSee('CC-SHOW-TEST');
-        $response->assertSee('Pending');
+        $response->assertSee(__('Pending'));
     }
 
     public function test_management_show_view_has_approve_and_reject_buttons_for_pending_expense(): void
