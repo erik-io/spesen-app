@@ -35,6 +35,203 @@ class ExpenseManagementTest extends TestCase
         });
     }
 
+    public function test_management_index_view_can_be_rendered_by_supervisor(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $response = $this->actingAs($user)->get(route('expenses.management.index'));
+
+        $response->assertOk();
+        $response->assertViewIs('expenses.management.index');
+        $response->assertSee(__('Expense Management'));
+    }
+
+    public function test_management_index_view_displays_only_pending_expenses(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $employee = User::factory()->create();
+        $employee->assignRole('employee');
+
+        Expense::factory()->for($employee)->create([
+            'status' => Expense::STATUS_PENDING,
+            'cost_center' => 'CC-PENDING',
+        ]);
+
+        Expense::factory()->for($employee)->create([
+            'status' => Expense::STATUS_APPROVED,
+            'cost_center' => 'CC-APPROVED',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('expenses.management.index'));
+
+        $response->assertOk();
+        $response->assertSee('CC-PENDING');
+        $response->assertDontSee('CC-APPROVED');
+    }
+
+    public function test_management_index_view_displays_employee_names(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $employee = User::factory()->create(['name' => 'John Doe']);
+        $employee->assignRole('employee');
+
+        Expense::factory()->for($employee)->create([
+            'status' => Expense::STATUS_PENDING,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('expenses.management.index'));
+
+        $response->assertOk();
+        $response->assertSee('John Doe');
+    }
+
+    public function test_management_index_view_has_view_details_links(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $employee = User::factory()->create();
+        $employee->assignRole('employee');
+
+        $expense = Expense::factory()->for($employee)->create([
+            'status' => Expense::STATUS_PENDING,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('expenses.management.index'));
+
+        $response->assertOk();
+        $response->assertSee(__('View Details'));
+    }
+
+    public function test_management_index_view_shows_empty_state_when_no_pending_expenses(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $response = $this->actingAs($user)->get(route('expenses.management.index'));
+
+        $response->assertOk();
+        $response->assertSee(__('No pending expense reports found.'));
+    }
+
+    public function test_management_index_view_has_view_history_button(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $response = $this->actingAs($user)->get(route('expenses.management.index'));
+
+        $response->assertOk();
+        $response->assertSee(__('View History'));
+    }
+
+    public function test_history_view_can_be_rendered_by_supervisor(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $response = $this->actingAs($user)->get(route('expenses.management.history'));
+
+        $response->assertOk();
+        $response->assertViewIs('expenses.management.history');
+        $response->assertSee(__('Archive'));
+    }
+
+    public function test_history_view_displays_all_expenses_by_default(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $employee = User::factory()->create();
+        $employee->assignRole('employee');
+
+        Expense::factory()->for($employee)->create([
+            'status' => Expense::STATUS_PENDING,
+            'cost_center' => 'CC-PENDING',
+        ]);
+
+        Expense::factory()->for($employee)->create([
+            'status' => Expense::STATUS_APPROVED,
+            'cost_center' => 'CC-APPROVED',
+        ]);
+
+        Expense::factory()->for($employee)->create([
+            'status' => Expense::STATUS_REJECTED,
+            'cost_center' => 'CC-REJECTED',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('expenses.management.history'));
+
+        $response->assertOk();
+        $response->assertSee('CC-PENDING');
+        $response->assertSee('CC-APPROVED');
+        $response->assertSee('CC-REJECTED');
+    }
+
+    public function test_history_view_has_status_filter(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $response = $this->actingAs($user)->get(route('expenses.management.history'));
+
+        $response->assertOk();
+        $response->assertSee(__('Filter'));
+        $response->assertSee('name="status"', false);
+    }
+
+    public function test_history_view_filters_by_approved_status(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $employee = User::factory()->create();
+        $employee->assignRole('employee');
+
+        Expense::factory()->for($employee)->create([
+            'status' => Expense::STATUS_APPROVED,
+            'cost_center' => 'CC-APPROVED',
+        ]);
+
+        Expense::factory()->for($employee)->create([
+            'status' => Expense::STATUS_REJECTED,
+            'cost_center' => 'CC-REJECTED',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('expenses.management.history', ['status' => Expense::STATUS_APPROVED]));
+
+        $response->assertOk();
+        $response->assertSee('CC-APPROVED');
+        $response->assertDontSee('CC-REJECTED');
+    }
+
+    public function test_history_view_has_view_pending_button(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $response = $this->actingAs($user)->get(route('expenses.management.history'));
+
+        $response->assertOk();
+        $response->assertSee(__('View Pending'));
+    }
+
+    public function test_history_view_shows_empty_state_when_no_expenses(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $response = $this->actingAs($user)->get(route('expenses.management.history'));
+
+        $response->assertOk();
+        $response->assertSee(__('No expense reports found.'));
+    }
+
     public function test_supervisor_can_view_approved_expenses_of_all_employees_in_history(): void
     {
         $supervisor = User::factory()->create();
@@ -130,7 +327,7 @@ class ExpenseManagementTest extends TestCase
         });
     }
 
-    public function test_supervisor_history_lists_all_with_default_desc_and_can_filter_status(): void
+    public function test_supervisor_history_list_can_filter_status(): void
     {
         $supervisor = User::factory()->create();
         $supervisor->assignRole('supervisor');
@@ -139,21 +336,28 @@ class ExpenseManagementTest extends TestCase
         $approvedExpense = Expense::factory()->approved()->create(['created_at' => now()->subDays(2)]);
         $rejectedExpense = Expense::factory()->rejected()->create(['created_at' => now()->subDay()]);
 
-        // Default desc
-        $this->actingAs($supervisor)
-            ->get(route('expenses.management.history'))
-            ->assertOk()
-            ->assertViewHas('expenses', function ($paginator) use ($rejectedExpense) {
-                $items = $paginator->items();
-                return $items[0]->id === $rejectedExpense->id; // newest first
-            });
-
         // Filter only approved
         $this->actingAs($supervisor)
-            ->get(route('expenses.management.history', ['status' => 'approved']))
+            ->get(route('expenses.management.history', ['status' => Expense::STATUS_APPROVED]))
             ->assertOk()
             ->assertViewHas('expenses', function ($paginator) {
-                return collect($paginator->items())->every(fn ($e) => $e->status === 'approved');
+                return collect($paginator->items())->every(fn ($expense) => $expense->status === Expense::STATUS_APPROVED);
+            });
+
+        // Filter only pending
+        $this->actingAs($supervisor)
+            ->get(route('expenses.management.history', ['status' => Expense::STATUS_PENDING]))
+            ->assertOk()
+            ->assertViewHas('expenses', function ($paginator) {
+                return collect($paginator->items())->every(fn ($expense) => $expense->status === Expense::STATUS_PENDING);
+            });
+
+        // Filter only rejected
+        $this->actingAs($supervisor)
+            ->get(route('expenses.management.history', ['status' => Expense::STATUS_REJECTED]))
+            ->assertOk()
+            ->assertViewHas('expenses', function ($paginator) {
+                return collect($paginator->items())->every(fn ($expense) => $expense->status === Expense::STATUS_REJECTED);
             });
     }
 
@@ -176,23 +380,6 @@ class ExpenseManagementTest extends TestCase
         $response->assertViewHas('expense', $expense);
     }
 
-    public function test_supervisor_can_approve_and_clears_previous_rejection_comment(): void
-    {
-        $supervisor = User::factory()->create();
-        $supervisor->assignRole('supervisor');
-        $expense = Expense::factory()->rejected('Too expensive')->create();
-
-        $this->actingAs($supervisor)
-            ->patch(route('expenses.management.approve', $expense))
-            ->assertRedirect(route('expenses.management.index'));
-
-        $this->assertDatabaseHas('expenses', [
-            'id' => $expense->id,
-            'status' => 'approved',
-            'rejection_comment' => null,
-        ]);
-    }
-
     public function test_supervisor_can_reject_with_comment_and_validation_enforced(): void
     {
         $supervisor = User::factory()->create();
@@ -213,7 +400,7 @@ class ExpenseManagementTest extends TestCase
 
         $this->assertDatabaseHas('expenses', [
             'id' => $expense->id,
-            'status' => 'rejected',
+            'status' => Expense::STATUS_REJECTED,
             'rejection_comment' => 'Invalid receipt',
         ]);
     }
@@ -252,7 +439,7 @@ class ExpenseManagementTest extends TestCase
 
         $this->assertDatabaseHas('expenses', [
             'id' => $expense->id,
-            'status' => 'approved',
+            'status' => Expense::STATUS_APPROVED,
         ]);
     }
 
@@ -263,10 +450,27 @@ class ExpenseManagementTest extends TestCase
         $expense = Expense::factory()->approved()->create();
 
         $this->actingAs($supervisor)
+            ->from(route('expenses.management.show', $expense))
             ->patch(route('expenses.management.approve', $expense))
-            ->assertRedirect(route('expenses.management.index'));
+            ->assertRedirect(route('expenses.management.show', $expense))
+            ->assertSessionHas('error');
 
-        $this->assertEquals('approved', $expense->fresh()->status);
+        $this->assertEquals(Expense::STATUS_APPROVED, $expense->fresh()->status);
+    }
+
+    public function test_approving_an_already_rejected_expense_does_not_change_status(): void
+    {
+        $supervisor = User::factory()->create();
+        $supervisor->assignRole('supervisor');
+        $expense = Expense::factory()->rejected()->create();
+
+        $this->actingAs($supervisor)
+            ->from(route('expenses.management.show', $expense))
+            ->patch(route('expenses.management.approve', $expense))
+            ->assertRedirect(route('expenses.management.show', $expense))
+            ->assertSessionHas('error');
+
+        $this->assertEquals(Expense::STATUS_REJECTED, $expense->fresh()->status);
     }
 
     public function test_management_index_falls_back_to_defaults_with_invalid_query_params(): void
@@ -329,5 +533,228 @@ class ExpenseManagementTest extends TestCase
             ->patch(route('expenses.management.reject', $expense), ['rejection_comment' => 'test']);
 
         $response->assertStatus(403);
+    }
+
+    public function test_supervisor_cannot_leave_comment_empty_on_rejected_expense(): void
+    {
+        $supervisor = User::factory()->create();
+        $supervisor->assignRole('supervisor');
+
+        $expense = Expense::factory()->pending()->create();
+
+        $this->actingAs($supervisor)
+            ->from(route('expenses.management.index'))
+            ->patch(route('expenses.management.reject', $expense), [
+                'rejection_comment' => ''
+            ])
+            ->assertSessionHasErrors(['rejection_comment']);
+
+        $this->assertDatabaseHas('expenses', [
+            'id' => $expense->id,
+            'status' => Expense::STATUS_PENDING,
+            'rejection_comment' => null,
+        ]);
+    }
+
+    public function test_supervisor_cannot_leave_comment_exceeding_max_length_on_rejected_expense(): void
+    {
+        $supervisor = User::factory()->create();
+        $supervisor->assignRole('supervisor');
+
+        $expense = Expense::factory()->pending()->create();
+
+        $this->actingAs($supervisor)
+            ->patch(route('expenses.management.reject', $expense), [
+                'rejection_comment' => str_repeat('X', Expense::MAX_REJECTION_COMMENT_LENGTH + 1)
+            ])
+            ->assertSessionHasErrors(['rejection_comment']);
+
+        $this->assertDatabaseHas('expenses', [
+            'id' => $expense->id,
+            'status' => Expense::STATUS_PENDING,
+            'rejection_comment' => null,
+        ]);
+    }
+
+    public function test_supervisor_cannot_leave_comment_on_rejected_expense(): void
+    {
+        $supervisor = User::factory()->create();
+        $supervisor->assignRole('supervisor');
+
+        $expense = Expense::factory()->create([
+            'status' => Expense::STATUS_REJECTED,
+            'rejection_comment' => 'Original reason',
+        ]);
+
+        $this->actingAs($supervisor)
+            ->patch(route('expenses.management.reject', $expense), [
+                'rejection_comment' => 'New reason'
+            ]);
+
+        $this->assertDatabaseHas('expenses', [
+            'id' => $expense->id,
+            'status' => Expense::STATUS_REJECTED,
+            'rejection_comment' => 'Original reason',
+        ]);
+    }
+
+    public function test_supervisor_cannot_leave_comment_on_approved_expense(): void
+    {
+        $supervisor = User::factory()->create();
+        $supervisor->assignRole('supervisor');
+
+        $expense = Expense::factory()->create([
+            'status' => Expense::STATUS_APPROVED,
+            'rejection_comment' => null,
+        ]);
+
+        $this->actingAs($supervisor)
+            ->patch(route('expenses.management.reject', $expense), [
+                'rejection_comment' => 'Trying to reject an approved item'
+            ]);
+
+        $this->assertDatabaseHas('expenses', [
+            'id' => $expense->id,
+            'status' => Expense::STATUS_APPROVED, // Must stay approved
+            'rejection_comment' => null,          // Must stay null
+        ]);
+    }
+
+    public function test_supervisor_cannot_approve_rejected_expense(): void
+    {
+        $supervisor = User::factory()->create();
+        $supervisor->assignRole('supervisor');
+
+        // Create an expense that is ALREADY rejected
+        $expense = Expense::factory()->create([
+            'status' => Expense::STATUS_REJECTED,
+            'user_id' => User::factory(),
+        ]);
+
+        // Attempt to approve it
+        $this->actingAs($supervisor)
+            ->patch(route('expenses.management.approve', $expense));
+
+        // Assert the database was NOT updated
+        $this->assertDatabaseHas('expenses', [
+            'id' => $expense->id,
+            'status' => Expense::STATUS_REJECTED, // Must stay rejected
+        ]);
+    }
+
+    public function test_supervisor_cannot_reject_approved_expense(): void
+    {
+        $supervisor = User::factory()->create();
+        $supervisor->assignRole('supervisor');
+
+        $expense = Expense::factory()->create([
+            'status' => Expense::STATUS_APPROVED,
+            'user_id' => User::factory(),
+        ]);
+
+        $this->actingAs($supervisor)
+            ->patch(route('expenses.management.reject', $expense), [
+                'rejection_comment' => 'Trying to flip status'
+            ]);
+
+        $this->assertDatabaseHas('expenses', [
+            'id' => $expense->id,
+            'status' => Expense::STATUS_APPROVED,
+        ]);
+    }
+
+    public function test_management_show_view_displays_expense_details(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $employee = User::factory()->create(['name' => 'John Doe']);
+        $employee->assignRole('employee');
+
+        $expense = Expense::factory()->for($employee)->create([
+            'amount' => 123.45,
+            'expense_date' => '2023-01-15',
+            'cost_center' => 'CC-SHOW-TEST',
+            'status' => Expense::STATUS_PENDING,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('expenses.management.show', $expense));
+
+        $response->assertOk();
+        $response->assertSee('John Doe');
+        $response->assertSee('123,45');
+        $response->assertSee('15.01.2023');
+        $response->assertSee('CC-SHOW-TEST');
+        $response->assertSee('Pending');
+    }
+
+    public function test_management_show_view_has_approve_and_reject_buttons_for_pending_expense(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $employee = User::factory()->create();
+        $employee->assignRole('employee');
+
+        $expense = Expense::factory()->for($employee)->pending()->create();
+
+        $response = $this->actingAs($user)->get(route('expenses.management.show', $expense));
+
+        $response->assertOk();
+        $response->assertSee(__('Approve'));
+        $response->assertSee(__('Reject'));
+    }
+
+    public function test_management_show_view_does_not_have_action_buttons_for_approved_expense(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $employee = User::factory()->create();
+        $employee->assignRole('employee');
+
+        $expense = Expense::factory()->for($employee)->approved()->create();
+
+        $response = $this->actingAs($user)->get(route('expenses.management.show', $expense));
+
+        $response->assertOk();
+        $response->assertDontSee(__('Actions'));
+        $response->assertSee(__('Status'));
+        $response->assertSee(__('This expense report has already been approved.'));
+    }
+
+    public function test_management_show_view_shows_rejection_comment_for_rejected_expense(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $employee = User::factory()->create();
+        $employee->assignRole('employee');
+
+        $expense = Expense::factory()->for($employee)->create([
+            'status' => Expense::STATUS_REJECTED,
+            'rejection_comment' => 'This is a test rejection comment.',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('expenses.management.show', $expense));
+
+        $response->assertOk();
+        $response->assertSee('This is a test rejection comment.');
+    }
+
+    public function test_management_show_view_has_back_to_index_button(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('supervisor');
+
+        $employee = User::factory()->create();
+        $employee->assignRole('employee');
+
+        $expense = Expense::factory()->for($employee)->create();
+
+        $response = $this->actingAs($user)->get(route('expenses.management.show', $expense));
+
+        $response->assertOk();
+        $response->assertSee(route('expenses.management.index'));
     }
 }

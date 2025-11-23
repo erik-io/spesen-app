@@ -22,6 +22,7 @@ class ExpenseIndexTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('expenses.index');
         $response->assertViewHas('expenses');
+        $response->assertSee(__('My Expense Reports'));
     }
 
     public function test_user_cannot_view_expenses_list(): void
@@ -51,11 +52,11 @@ class ExpenseIndexTest extends TestCase
     {
         $employee1 = User::factory()->create();
         $employee1->assignRole('employee');
-        $expenseForEmployee1 = Expense::factory()->for($employee1)->create();
+        $expenseForEmployee1 = Expense::factory()->for($employee1)->create(['cost_center' => 'CC-FOR-EMP1']);
 
         $employee2 = User::factory()->create();
         $employee2->assignRole('employee');
-        $expenseForEmployee2 = Expense::factory()->for($employee2)->create();
+        $expenseForEmployee2 = Expense::factory()->for($employee2)->create(['cost_center' => 'CC-FOR-EMP2']);
 
         $response = $this->actingAs($employee1)->get(route('expenses.index'));
 
@@ -64,6 +65,8 @@ class ExpenseIndexTest extends TestCase
             return $expenses->contains($expenseForEmployee1)
                 && !$expenses->contains($expenseForEmployee2);
         });
+        $response->assertSee('CC-FOR-EMP1');
+        $response->assertDontSee('CC-FOR-EMP2');
     }
 
     public function test_employee_only_sees_their_expenses_paginated(): void
@@ -116,7 +119,7 @@ class ExpenseIndexTest extends TestCase
             // Default sort is created_at desc (newest first)
             $items = $paginator->items();
             $this->assertGreaterThanOrEqual($items[1]['created_at'], $items[0]['created_at']);
-            return collect($items)->every(fn ($e) => $e->user_id === $employee->id);
+            return collect($items)->every(fn ($expense) => $expense->user_id === $employee->id);
         });
     }
 
@@ -155,10 +158,11 @@ class ExpenseIndexTest extends TestCase
             ->get(route('expenses.index', ['sort_by' => 'amount', 'sort_direction' => 'asc']));
 
         $response->assertOk();
-        $response->assertViewHas('expenses', function ($paginator) use ($expense1, $expense2) {
+        $response->assertViewHas('expenses', function ($paginator) use ($expense1, $expense2, $expense3) {
             $items = $paginator->items();
             $this->assertEquals($expense1->id, $items[0]->id);
             $this->assertEquals($expense2->id, $items[2]->id);
+            $this->assertEquals($expense3->id, $items[1]->id);
             return true;
         });
     }
@@ -208,5 +212,60 @@ class ExpenseIndexTest extends TestCase
             $this->assertSame(100, $paginator->total());
             return true;
         });
+    }
+
+    public function test_index_view_shows_status_badges(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        Expense::factory()->for($user)->pending()->create();
+        Expense::factory()->for($user)->approved()->create();
+        Expense::factory()->for($user)->rejected()->create();
+
+        $response = $this->actingAs($user)->get(route('expenses.index'));
+
+        $response->assertOk();
+        $response->assertSee('Pending');
+        $response->assertSee('Approved');
+        $response->assertSee('Rejected');
+    }
+
+    public function test_index_view_shows_rejection_comment_for_rejected_expenses(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        Expense::factory()->for($user)->create([
+            'status' => Expense::STATUS_REJECTED,
+            'rejection_comment' => 'Invalid receipt',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('expenses.index'));
+
+        $response->assertOk();
+        $response->assertSee('Invalid receipt');
+    }
+
+    public function test_index_view_shows_empty_state_when_no_expenses(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $response = $this->actingAs($user)->get(route('expenses.index'));
+
+        $response->assertOk();
+        $response->assertSee(__('No expense reports found.'));
+    }
+
+    public function test_index_view_has_create_new_expense_button(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('employee');
+
+        $response = $this->actingAs($user)->get(route('expenses.index'));
+
+        $response->assertOk();
+        $response->assertSee(__('Submit New Expense'));
     }
 }
