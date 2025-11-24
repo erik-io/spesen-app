@@ -1,6 +1,49 @@
 {
     "preset": "psr12",
     "rules": {
-        "declare_strict_types": true
+        "declare_strict_types": true,
+
+        "no_unused_imports": true,
+        "ordered_imports": {
+            "sort_algorithm": "alpha"
+        },
+
+        "ordered_class_elements": true,
+        "class_attributes_separation": {
+            "elements": {
+                "const": "one",
+                "property": "one",
+                "method": "one"
+            }
+        },
+        "method_argument_space": {
+            "on_multiline": "ensure_fully_multiline"
+        },
+        "no_whitespace_in_blank_line": true,
+        "trim_array_spaces": true,
+        "array_indentation": true,
+        "binary_operator_spaces": {
+            "default": "single_space"
+        },
+        "concat_space": { "spacing": "one" },
+        "trailing_comma_in_multiline": true,
+
+        "no_useless_else": true,
+        "no_useless_return": true,
+        "simplified_if_return": true,
+        "return_assignment": true,
+        "ternary_to_null_coalescing": true,
+        "nullable_type_declaration_for_default_null_value": true,
+
+        "phpdoc_summary": true,
+        "phpdoc_indent": true,
+        "phpdoc_trim": true,
+        "phpdoc_order": true,
+        "phpdoc_trim_consecutive_blank_line_separation": true,
+        "phpdoc_no_alias_tag": true,
+        "phpdoc_types_order": {
+            "sort_algorithm": "alpha",
+            "null_adjustment": "always_last"
+        }
     }
 }
