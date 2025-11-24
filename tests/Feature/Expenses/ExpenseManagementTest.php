@@ -139,7 +139,7 @@ class ExpenseManagementTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('expenses.management.history');
-        $response->assertSee(__('Archive'));
+        $response->assertSee(__('Expense History'));
     }
 
     public function test_history_view_displays_all_expenses_by_default(): void
