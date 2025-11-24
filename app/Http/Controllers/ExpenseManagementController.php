@@ -19,6 +19,31 @@ class ExpenseManagementController extends Controller
         return view('expenses.management.index', compact('expenses'));
     }
 
+    public function show(Expense $expense): View
+    {
+        return view('expenses.management.show', compact('expense'));
+    }
+
+    public function approve(AcceptExpenseRequest $request, Expense $expense): RedirectResponse
+    {
+        $expense->update(['status' => Expense::STATUS_APPROVED, 'rejection_comment' => null]); // Clear any previous rejection comment
+
+        return redirect()->route('expenses.management.index')->with('success', __('messages.feedback.approved'));
+    }
+
+    public function reject(RejectExpenseRequest $request, Expense $expense): RedirectResponse
+    {
+        $expense->update(['status' => Expense::STATUS_REJECTED, 'rejection_comment' => $request->validated('rejection_comment')]);
+
+        return redirect()->route('expenses.management.index')->with('success', __('messages.feedback.rejected'));
+    }
+
+    public function history(Request $request): View
+    {
+        $expenses = $this->getPaginatedExpenses($request, 'all');
+        return view('expenses.management.history', compact('expenses'));
+    }
+
     private function getPaginatedExpenses(Request $request, string $statusScope)
     {
         $allowedSortBy = ['created_at', 'expense_date', 'cost_center', 'amount', 'status', 'user_id'];
@@ -64,30 +89,5 @@ class ExpenseManagementController extends Controller
         $query->orderBy($sortBy, $sortDirection);
 
         return $query->paginate($perPage)->withQueryString();
-    }
-
-    public function show(Expense $expense): View
-    {
-        return view('expenses.management.show', compact('expense'));
-    }
-
-    public function approve(AcceptExpenseRequest $request, Expense $expense): RedirectResponse
-    {
-        $expense->update(['status' => Expense::STATUS_APPROVED, 'rejection_comment' => null]); // Clear any previous rejection comment
-
-        return redirect()->route('expenses.management.index')->with('success', __('messages.feedback.approved'));
-    }
-
-    public function reject(RejectExpenseRequest $request, Expense $expense): RedirectResponse
-    {
-        $expense->update(['status' => Expense::STATUS_REJECTED, 'rejection_comment' => $request->validated('rejection_comment')]);
-
-        return redirect()->route('expenses.management.index')->with('success', __('messages.feedback.rejected'));
-    }
-
-    public function history(Request $request): View
-    {
-        $expenses = $this->getPaginatedExpenses($request, 'all');
-        return view('expenses.management.history', compact('expenses'));
     }
 }

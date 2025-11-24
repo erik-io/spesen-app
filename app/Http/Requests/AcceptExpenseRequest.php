@@ -22,7 +22,7 @@ class AcceptExpenseRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, array<mixed>|\Illuminate\Contracts\Validation\ValidationRule|string>
      */
     public function rules(): array
     {
@@ -34,9 +34,9 @@ class AcceptExpenseRequest extends FormRequest
     /**
      * Handle failed authorization for accepting an expense.
      *
-     * @return void
      * @throws Illuminate\Http\Exceptions\HttpResponseException
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return void
      */
     public function failedAuthorization()
     {

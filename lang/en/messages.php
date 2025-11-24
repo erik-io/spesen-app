@@ -10,5 +10,5 @@ return [
     ],
     'general' => [
         'unknown_user' => 'Unknown user',
-    ]
+    ],
 ];

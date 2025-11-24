@@ -19,5 +19,5 @@ return [
         'title' => 'Konto löschen',
         'warning' => 'Sobald Ihr Konto gelöscht wurde, werden alle zugehörigen Ressourcen und Daten dauerhaft gelöscht. Bevor Sie Ihr Konto löschen, laden Sie bitte alle Daten oder Informationen herunter, die Sie behalten möchten.',
         'confirm' => 'Sind Sie sicher, dass Sie Ihr Konto löschen möchten?',
-    ]
+    ],
 ];

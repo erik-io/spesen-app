@@ -11,8 +11,11 @@ use Illuminate\View\Component;
 class SortableLink extends Component
 {
     public string $sortBy;
+
     public string $label;
+
     public string $currentSortBy;
+
     public string $currentSortDirection;
 
     /**

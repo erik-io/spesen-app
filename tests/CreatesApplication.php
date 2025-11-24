@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Trait CreatesApplication
+ * Trait CreatesApplication.
  *
  * This trait provides a method to create the application instance
  * used by the testing environment in a Laravel application.

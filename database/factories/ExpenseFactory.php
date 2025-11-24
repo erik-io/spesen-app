@@ -50,7 +50,7 @@ class ExpenseFactory extends Factory
     }
 
     /** Indicate that the expense is rejected */
-    public function rejected(string $comment = null): static
+    public function rejected(?string $comment = null): static
     {
         return $this->state(fn (array $attributes) => [
             'status' => Expense::STATUS_REJECTED,

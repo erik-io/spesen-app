@@ -40,6 +40,16 @@ class User extends Authenticatable
     ];
 
     /**
+     * Get all expenses for the user.
+     *
+     * @return HasMany
+     */
+    public function expenses(): HasMany
+    {
+        return $this->hasMany(Expense::class); // $user->expenses
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -50,15 +60,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    /**
-     * Get all expenses for the user.
-     *
-     * @return HasMany
-     */
-    public function expenses(): HasMany
-    {
-        return $this->hasMany(Expense::class); // $user->expenses
     }
 }

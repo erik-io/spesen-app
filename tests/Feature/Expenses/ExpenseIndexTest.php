@@ -173,16 +173,16 @@ class ExpenseIndexTest extends TestCase
         $employee->assignRole('employee');
 
         $oldExpense = Expense::factory()->for($employee)->create([
-            'expense_date' => now()->subDays(5)->toDateString()
+            'expense_date' => now()->subDays(5)->toDateString(),
         ]);
 
         $newExpense = Expense::factory()->for($employee)->create([
-            'expense_date' => now()->subDays(1)->toDateString()
+            'expense_date' => now()->subDays(1)->toDateString(),
         ]);
 
         $response = $this->actingAs($employee)->get(route('expenses.index', [
             'sort_by' => 'expense_date',
-            'sort_direction' => 'asc'
+            'sort_direction' => 'asc',
         ]));
 
         $response->assertOk();

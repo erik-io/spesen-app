@@ -21,7 +21,7 @@ class StoreExpenseRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, array<mixed>|string|ValidationRule>
      */
     public function rules(): array
     {
@@ -50,7 +50,7 @@ class StoreExpenseRequest extends FormRequest
 
     /**
      * Prepare the data for validation.
-     * Converts comma to period for amount, to ensure that API clients (e.g Postman) can also send 'de-DE' formats
+     * Converts comma to period for amount, to ensure that API clients (e.g Postman) can also send 'de-DE' formats.
      */
     protected function prepareForValidation(): void
     {

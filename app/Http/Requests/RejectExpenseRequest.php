@@ -24,9 +24,9 @@ class RejectExpenseRequest extends FormRequest
     /**
      * Handle failed authorization for rejecting an expense.
      *
-     * @return void
      * @throws Illuminate\Http\Exceptions\HttpResponseException
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return void
      */
     public function failedAuthorization()
     {
@@ -45,7 +45,7 @@ class RejectExpenseRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, array<mixed>|string|ValidationRule>
      */
     public function rules(): array
     {
@@ -56,7 +56,7 @@ class RejectExpenseRequest extends FormRequest
                     'string',
                     'filled',
                     'max:' . Expense::MAX_REJECTION_COMMENT_LENGTH,
-                ]
+                ],
         ];
     }
 }

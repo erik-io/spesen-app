@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
         $testEmployee->assignRole('employee');
 
         $testSupervisor = User::factory()->create([
-            'email' => 'supervisor@example.com'
+            'email' => 'supervisor@example.com',
         ]);
 
         $testSupervisor->assignRole('supervisor');

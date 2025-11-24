@@ -545,7 +545,7 @@ class ExpenseManagementTest extends TestCase
         $this->actingAs($supervisor)
             ->from(route('expenses.management.index'))
             ->patch(route('expenses.management.reject', $expense), [
-                'rejection_comment' => ''
+                'rejection_comment' => '',
             ])
             ->assertSessionHasErrors(['rejection_comment']);
 
@@ -565,7 +565,7 @@ class ExpenseManagementTest extends TestCase
 
         $this->actingAs($supervisor)
             ->patch(route('expenses.management.reject', $expense), [
-                'rejection_comment' => str_repeat('X', Expense::MAX_REJECTION_COMMENT_LENGTH + 1)
+                'rejection_comment' => str_repeat('X', Expense::MAX_REJECTION_COMMENT_LENGTH + 1),
             ])
             ->assertSessionHasErrors(['rejection_comment']);
 
@@ -588,7 +588,7 @@ class ExpenseManagementTest extends TestCase
 
         $this->actingAs($supervisor)
             ->patch(route('expenses.management.reject', $expense), [
-                'rejection_comment' => 'New reason'
+                'rejection_comment' => 'New reason',
             ]);
 
         $this->assertDatabaseHas('expenses', [
@@ -610,7 +610,7 @@ class ExpenseManagementTest extends TestCase
 
         $this->actingAs($supervisor)
             ->patch(route('expenses.management.reject', $expense), [
-                'rejection_comment' => 'Trying to reject an approved item'
+                'rejection_comment' => 'Trying to reject an approved item',
             ]);
 
         $this->assertDatabaseHas('expenses', [
@@ -654,7 +654,7 @@ class ExpenseManagementTest extends TestCase
 
         $this->actingAs($supervisor)
             ->patch(route('expenses.management.reject', $expense), [
-                'rejection_comment' => 'Trying to flip status'
+                'rejection_comment' => 'Trying to flip status',
             ]);
 
         $this->assertDatabaseHas('expenses', [
