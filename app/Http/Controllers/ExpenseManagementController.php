@@ -16,6 +16,7 @@ class ExpenseManagementController extends Controller
     public function index(Request $request): View
     {
         $expenses = $this->getPaginatedExpenses($request, Expense::STATUS_PENDING);
+
         return view('expenses.management.index', compact('expenses'));
     }
 
@@ -41,6 +42,7 @@ class ExpenseManagementController extends Controller
     public function history(Request $request): View
     {
         $expenses = $this->getPaginatedExpenses($request, 'all');
+
         return view('expenses.management.history', compact('expenses'));
     }
 

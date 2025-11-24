@@ -491,6 +491,7 @@ class ExpenseManagementTest extends TestCase
         $response->assertViewHas('expenses', function ($paginator) {
             // Default per page is 10
             $this->assertCount(10, $paginator->items());
+
             return true;
         });
     }

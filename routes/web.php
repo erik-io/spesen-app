@@ -20,6 +20,7 @@ Route::get('/dashboard', function () {
     if ($user->hasRole('employee')) {
         return redirect()->route('expenses.index');
     }
+
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 

@@ -21,6 +21,7 @@ class ExpenseFactory extends Factory
     public function definition(): array
     {
         $status = $this->faker->randomElement(Expense::STATUSES);
+
         return [
             'user_id' => User::factory(),
             'expense_date' => $this->faker->dateTimeBetween(now()->subDays(Expense::MAX_SUBMISSION_AGE_DAYS), 'now')->format('Y-m-d'),

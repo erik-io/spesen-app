@@ -89,6 +89,7 @@ class ExpenseIndexTest extends TestCase
             // Default per page is 10
             $this->assertCount(10, $paginator->items());
             $this->assertEquals(15, $paginator->total());
+
             // Ensure all expenses belong to the correct employee
             return collect($paginator->items())->every(fn ($expense) => $expense->user_id === $employee->id);
         });
@@ -119,6 +120,7 @@ class ExpenseIndexTest extends TestCase
             // Default sort is created_at desc (newest first)
             $items = $paginator->items();
             $this->assertGreaterThanOrEqual($items[1]['created_at'], $items[0]['created_at']);
+
             return collect($items)->every(fn ($expense) => $expense->user_id === $employee->id);
         });
     }
@@ -141,6 +143,7 @@ class ExpenseIndexTest extends TestCase
         $response->assertViewHas('expenses', function ($paginator) {
             // Default per page is 10
             $this->assertCount(10, $paginator->items());
+
             return true;
         });
     }
@@ -163,6 +166,7 @@ class ExpenseIndexTest extends TestCase
             $this->assertEquals($expense1->id, $items[0]->id);
             $this->assertEquals($expense2->id, $items[2]->id);
             $this->assertEquals($expense3->id, $items[1]->id);
+
             return true;
         });
     }
@@ -190,6 +194,7 @@ class ExpenseIndexTest extends TestCase
         // Assert that the items in the view are in the correct order
         $response->assertViewHas('expenses', function ($paginator) use ($oldExpense, $newExpense) {
             $items = $paginator->items();
+
             return $items[0]->id === $oldExpense->id && $items[1]->id === $newExpense->id;
         });
     }
@@ -210,6 +215,7 @@ class ExpenseIndexTest extends TestCase
             $this->assertCount(25, $paginator->items());
             // Check total items found
             $this->assertSame(100, $paginator->total());
+
             return true;
         });
     }
