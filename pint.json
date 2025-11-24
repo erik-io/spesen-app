@@ -9,7 +9,7 @@
         "ordered_class_elements": true,
         "class_attributes_separation": {
             "elements": {
-                "const": "one",
+                "const": "none",
                 "property": "one",
                 "method": "one"
             }

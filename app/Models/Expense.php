@@ -13,21 +13,13 @@ class Expense extends Model
     use HasFactory;
 
     public const AMOUNT_PRECISION = 10;
-
     public const AMOUNT_SCALE = 2;
-
     public const MAX_SUBMISSION_AGE_DAYS = 90;
-
     public const MAX_COST_CENTER_LENGTH = 50;
-
     public const MAX_REJECTION_COMMENT_LENGTH = 5000;
-
     public const STATUS_PENDING = 'pending';
-
     public const STATUS_APPROVED = 'approved';
-
     public const STATUS_REJECTED = 'rejected';
-
     public const STATUSES = [self::STATUS_PENDING, self::STATUS_APPROVED, self::STATUS_REJECTED];
 
     protected $fillable = [
