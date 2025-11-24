@@ -330,14 +330,14 @@ class ExpenseStoreTest extends TestCase
         $this->assertDatabaseCount('expenses', 0);
     }
 
-    public function test_user_cannot_store_expense_with_date_before_90_days(): void
+    public function test_user_cannot_store_expense_with_date_before_max_submission_age(): void
     {
         $user = User::factory()->create();
         $user->assignRole('employee');
 
         $payload = [
             'amount' => 10.00,
-            'expense_date' => now()->subDays(91)->toDateString(),
+            'expense_date' => now()->subDays(Expense::MAX_SUBMISSION_AGE_DAYS + 1)->toDateString(),
             'cost_center' => 'CC-101',
         ];
 
