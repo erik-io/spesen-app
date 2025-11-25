@@ -134,11 +134,11 @@
                                     </td>
                                     {{-- Submission Date --}}
                                     <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-100">
-                                        {{ $expense->created_at?->format('d.m.Y') }}
+                                        {{ $expense->created_at?->isoFormat('L') }}
                                     </td>
                                     {{-- Expense Date --}}
                                     <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-100">
-                                        {{ $expense->expense_date?->format('d.m.Y') }}
+                                        {{ $expense->expense_date?->isoFormat('L') }}
                                     </td>
                                     {{-- Cost Center --}}
                                     <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-100">

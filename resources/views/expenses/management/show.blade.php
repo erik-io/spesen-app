@@ -55,13 +55,13 @@
                                 {{-- Expense Date --}}
                                 <div class="flex justify-between">
                                     <dt class="text-base font-medium text-gray-500 dark:text-gray-400">{{ __('Expense Date') }}</dt>
-                                    <dd class="text-base text-gray-900 dark:text-gray-100">{{ $expense->expense_date?->format('d.m.Y') }}</dd>
+                                    <dd class="text-base text-gray-900 dark:text-gray-100">{{ $expense->expense_date?->translatedFormat('l, d F Y') }}</dd>
                                 </div>
                                 {{-- Submission Date --}}
                                 <div class="flex justify-between">
                                     <dt class="text-base font-medium text-gray-500 dark:text-gray-400">{{ __('Submission Date') }}
                                     </dt>
-                                    <dd class="text-base text-gray-900 dark:text-gray-100">{{ $expense->created_at?->format('d.m.Y H:i') }}</dd>
+                                    <dd class="text-base text-gray-900 dark:text-gray-100">{{ $expense->created_at?->isoFormat('LLL') }}</dd>
                                 </div>
                                 {{-- Cost Center --}}
                                 <div class="flex justify-between">
@@ -172,7 +172,7 @@
                                                 <div class="flex justify-between">
                                                     <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Date') }}:</span>
                                                     <span
-                                                        class="font-bold">{{ $expense->expense_date?->format('d.m.Y') }}</span>
+                                                        class="font-bold">{{ $expense->expense_date?->isoFormat('L') }}</span>
                                                 </div>
                                                 <div class="flex justify-between">
                                                     <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Cost Center') }}:</span>
@@ -233,7 +233,7 @@
                                             <div class="flex justify-between">
                                                 <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Date') }}:</span>
                                                 <span
-                                                    class="font-bold">{{ $expense->expense_date?->format('d.m.Y') }}</span>
+                                                    class="font-bold">{{ $expense->expense_date?->isoFormat('L') }}</span>
                                             </div>
                                             <div class="flex justify-between">
                                                 <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Cost Center') }}:</span>
