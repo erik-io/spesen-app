@@ -24,7 +24,7 @@ class SetLocale
             $locale = Session::get('locale');
 
             // Validate that the locale is supported
-            if (in_array($locale, config('app.available_locales'))) {
+            if (in_array($locale, config('locales.available_locales'))) {
                 App::setLocale($locale);
             }
         }

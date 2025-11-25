@@ -143,14 +143,19 @@
                         {{ __('Language') }}
                     </div>
                     <div class="flex space-x-2">
-                        <a href="{{ route('locale.switch', 'en') }}"
-                           class="flex-1 flex items-center justify-center px-3 py-2 text-sm rounded-md {{ app()->getLocale() === 'en' ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 font-semibold' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300' }}">
-                            <span class="me-1">🇬🇧</span> English
-                        </a>
-                        <a href="{{ route('locale.switch', 'de') }}"
-                           class="flex-1 flex items-center justify-center px-3 py-2 text-sm rounded-md {{ app()->getLocale() === 'de' ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 font-semibold' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300' }}">
-                            <span class="me-1">🇩🇪</span> Deutsch
-                        </a>
+                        @php
+                            $flags = config('locales.flags');
+                            $localeNames = config('locales.names');
+                            $availableLocales = config('locales.available_locales');
+                            $currentLocale = app()->getLocale();
+                        @endphp
+                        @foreach($availableLocales as $availableLocale)
+                            <a href="{{ route('locale.switch', $availableLocale) }}"
+                               class="flex-1 flex items-center justify-center px-3 py-2 text-sm rounded-md {{ $currentLocale === $availableLocale ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 font-semibold' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300' }}">
+                                <i class="fi {{ $flags[$availableLocale] ?? '' }} text-base me-1"></i>
+                                {{ $localeNames[$availableLocale] ?? strtoupper($availableLocale) }}
+                            </a>
+                        @endforeach
                     </div>
                 </div>
 

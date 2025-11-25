@@ -12,7 +12,7 @@ class LanguageController extends Controller
     public function switch(string $locale): RedirectResponse
     {
         // Validate locale
-        if (!in_array($locale, config('app.available_locales'))) {
+        if (!in_array($locale, config('locales.available_locales'))) {
             $locale = config('app.fallback_locale');
         }
 
