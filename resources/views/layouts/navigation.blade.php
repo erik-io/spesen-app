@@ -42,7 +42,10 @@
             </div>
 
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-2">
+                <!-- Language Switcher -->
+                <x-language-switcher/>
+
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button
@@ -134,6 +137,23 @@
             </div>
 
             <div class="mt-3 space-y-1">
+                <!-- Language Selection -->
+                <div class="px-4 py-2">
+                    <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+                        {{ __('Language') }}
+                    </div>
+                    <div class="flex space-x-2">
+                        <a href="{{ route('locale.switch', 'en') }}"
+                           class="flex-1 flex items-center justify-center px-3 py-2 text-sm rounded-md {{ app()->getLocale() === 'en' ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 font-semibold' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300' }}">
+                            <span class="me-1">🇬🇧</span> English
+                        </a>
+                        <a href="{{ route('locale.switch', 'de') }}"
+                           class="flex-1 flex items-center justify-center px-3 py-2 text-sm rounded-md {{ app()->getLocale() === 'de' ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 font-semibold' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300' }}">
+                            <span class="me-1">🇩🇪</span> Deutsch
+                        </a>
+                    </div>
+                </div>
+
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>

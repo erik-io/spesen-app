@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseManagementController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/locale/{locale}', [LanguageController::class, 'switch'])->name('locale.switch');
 
 Route::get('/', function () {
     return view('welcome');
