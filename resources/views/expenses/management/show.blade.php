@@ -41,7 +41,7 @@
                             <dl class="mt-2 space-y-2">
                                 {{-- Employee Name --}}
                                 <div class="flex justify-between">
-                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">{{ __('Name') }}</dt>
+                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400 mr-1">{{ __('Name') }}</dt>
                                     <dd class="text-base text-gray-900 dark:text-gray-100">
                                         {{ $expense->user?->name ?? __('messages.general.unknown_user') }}
 
@@ -54,30 +54,31 @@
                                 </div>
                                 {{-- Expense Date --}}
                                 <div class="flex justify-between">
-                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">{{ __('Expense Date') }}</dt>
+                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400 mr-1">{{ __('Expense Date') }}</dt>
                                     <dd class="text-base text-gray-900 dark:text-gray-100">{{ $expense->expense_date?->translatedFormat('l, d F Y') }}</dd>
                                 </div>
                                 {{-- Submission Date --}}
                                 <div class="flex justify-between">
-                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">{{ __('Submission Date') }}
+                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400 mr-1">{{ __('Submission Date') }}
                                     </dt>
                                     <dd class="text-base text-gray-900 dark:text-gray-100">{{ $expense->created_at?->isoFormat('LLL') }}</dd>
                                 </div>
                                 {{-- Cost Center --}}
-                                <div class="flex justify-between">
-                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">{{ __('Cost Center') }}</dt>
-                                    <dd class="text-base text-gray-900 dark:text-gray-100">{{ $expense->cost_center }}</dd>
-                                </div>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-100 w-40">
+                                    @php($costCenter = $expense->cost_center ?? __('messages.general.unknown_cost_center'))
+                                    <span class="block max-w-[9rem] truncate"
+                                          title="{{ $costCenter }}">{{ $costCenter }}</span>
+                                </td>
                                 {{-- Amount --}}
                                 <div class="flex justify-between">
-                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">{{ __('Amount') }}</dt>
+                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400 mr-1">{{ __('Amount') }}</dt>
                                     <dd class="text-base font-bold text-gray-900 dark:text-gray-100">{{ number_format($expense->amount, 2, ',', '.') }}
                                         €
                                     </dd>
                                 </div>
                                 {{-- Status --}}
                                 <div class="flex justify-between">
-                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">{{ __('Status') }}</dt>
+                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400 mr-1">{{ __('Status') }}</dt>
                                     <dd class="text-base text-gray-900 dark:text-gray-100">
                                         <x-expense-status :status="$expense->status"/>
                                     </dd>
@@ -176,7 +177,8 @@
                                                 </div>
                                                 <div class="flex justify-between">
                                                     <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Cost Center') }}:</span>
-                                                    <span class="font-bold">{{ $expense->cost_center }}</span>
+                                                    <span
+                                                        class="font-bold">{{ $expense->cost_center ?? __('messages.general.unknown_cost_center') }}</span>
                                                 </div>
                                             </div>
 
@@ -237,7 +239,8 @@
                                             </div>
                                             <div class="flex justify-between">
                                                 <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Cost Center') }}:</span>
-                                                <span class="font-bold">{{ $expense->cost_center }}</span>
+                                                <span
+                                                    class="font-bold">{{ $expense->cost_center ?? __('messages.general.unknown_cost_center') }}</span>
                                             </div>
                                         </div>
 

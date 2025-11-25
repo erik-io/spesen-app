@@ -10,5 +10,6 @@ return [
     ],
     'general' => [
         'unknown_user' => 'Unknown user',
+        'unknown_cost_center' => 'Unknown cost center',
     ],
 ];

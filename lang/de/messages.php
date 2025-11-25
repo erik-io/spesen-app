@@ -10,5 +10,6 @@ return [
     ],
     'general' => [
         'unknown_user' => 'Unbekannter Benutzer',
+        'unknown_cost_center' => 'Unbekannte Kostenstelle',
     ],
 ];

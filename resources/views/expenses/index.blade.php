@@ -110,8 +110,10 @@
                                         {{ $expense->expense_date?->isoFormat('L') }}
                                     </td>
                                     {{-- Cost Center --}}
-                                    <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-100">
-                                        {{ $expense->cost_center }}
+                                    <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-100 w-40">
+                                        @php($costCenter = $expense->cost_center ?? __('messages.general.unknown_cost_center'))
+                                        <span class="block max-w-[9rem] truncate"
+                                              title="{{ $costCenter }}">{{ $costCenter }}</span>
                                     </td>
                                     {{-- Amount --}}
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-gray-900 dark:text-gray-100">
