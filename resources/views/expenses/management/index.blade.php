@@ -4,21 +4,71 @@
         {{ __('Expense Management') }}
     </x-slot>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Expense Management') }}
-        </h2>
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    {{ __('Expense Management') }}
+                </h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    {{ __('Review and approve pending expense submissions') }}
+                </p>
+            </div>
+        </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <!-- Header Card -->
+            <div
+                class="mb-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-100 dark:border-none">
+                <div class="px-6 py-6">
+                    <div class="flex items-center justify-between flex-wrap gap-4">
+                        <div class="flex items-center space-x-3">
+                            <div
+                                class="flex items-center justify-center w-12 h-12 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
+                                <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none"
+                                     stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800 dark:text-white">
+                                    {{ __('Pending Expenses') }}
+                                </h3>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                                    {{ $expenses->total() }} {{ __('awaiting review') }}
+                                </p>
+                            </div>
+                        </div>
+                        <a href="{{ route('expenses.management.history') }}"
+                           class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-semibold rounded-lg shadow-md transition duration-150">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            {{ __('View History') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
 
                     {{-- Success flash message --}}
                     @if (session('success'))
-                        <div
-                            class="mb-4 p-4 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-200 border border-green-300 dark:border-green-700 rounded">
-                            {{ session('success') }}
+                        <div class="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 rounded-r-lg">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                                <p class="text-green-700 dark:text-green-200 font-medium">
+                                    {{ session('success') }}
+                                </p>
+                            </div>
                         </div>
                     @endif
 
@@ -32,7 +82,7 @@
                             <input type="hidden" name="sort_direction" value="{{ request('sort_direction', 'asc') }}">
 
                             <label for="per_page" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ __('Show') }}
+                                {{ __('Showing') }}
                             </label>
                             <select name="per_page" id="per_page"
                                     class="border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-200 dark:focus:ring-indigo-800 focus:ring-opacity-50 rounded-md shadow-sm"
@@ -48,11 +98,6 @@
                                 {{ __('per page') }}
                             </label>
                         </form>
-
-                        {{-- Button to show approved or rejected expenses --}}
-                        <x-primary-button href="{{ route('expenses.management.history') }}">
-                            {{ __('View History') }}
-                        </x-primary-button>
                     </div>
 
                     {{-- Expense Table --}}
@@ -155,10 +200,32 @@
                             @empty
                                 <tbody class="bg-white dark:bg-gray-800">
                                 <tr>
-                                    <td colspan="8"
-                                        class="px-6 py-4 whitespace-nowrap text-center text-gray-500 dark:text-gray-400">
-                                        {{ __('expenses.empty.pending') }}
-                                    </td>
+                                    <td colspan="8" class="px-6 py-16">
+                                        <div class="text-center">
+                                            <svg class="mx-auto h-16 w-16 text-gray-400" fill="none"
+                                                 stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-gray-100">
+                                                {{ __('All caught up!') }}
+                                            </h3>
+                                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                                {{ __('There are no pending expense reports to review') }}
+                                            </p>
+                                            <div class="mt-6">
+                                                <a href="{{ route('expenses.management.history') }}"
+                                                   class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md transition duration-150">
+                                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
+                                                         viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                              stroke-width="2"
+                                                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                    </svg>
+                                                    {{ __('View History') }}
+                                                </a>
+                                            </div>
+                                        </div>
                                 </tr>
                                 </tbody>
                             @endforelse
