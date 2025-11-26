@@ -261,7 +261,7 @@ class ExpenseIndexTest extends TestCase
         $response = $this->actingAs($user)->get(route('expenses.index'));
 
         $response->assertOk();
-        $response->assertSee(__('expenses.empty.all'));
+        $response->assertSee(__('No expenses yet'));
     }
 
     public function test_index_view_has_create_new_expense_button(): void
