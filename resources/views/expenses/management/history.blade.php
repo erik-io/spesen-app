@@ -149,7 +149,7 @@
                                     </td>
                                     {{-- Amount --}}
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-gray-900 dark:text-gray-100">
-                                        {{ number_format($expense->amount, 2, ',', '.') }} €
+                                        <x-money :amount="$expense->amount"/>
                                     </td>
                                     {{-- Status --}}
                                     <td class="px-6 py-4 whitespace-nowrap text-center">

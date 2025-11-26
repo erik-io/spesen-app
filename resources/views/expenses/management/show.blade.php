@@ -72,8 +72,8 @@
                                 {{-- Amount --}}
                                 <div class="flex justify-between">
                                     <dt class="text-base font-medium text-gray-500 dark:text-gray-400 mr-1">{{ __('Amount') }}</dt>
-                                    <dd class="text-base font-bold text-gray-900 dark:text-gray-100">{{ number_format($expense->amount, 2, ',', '.') }}
-                                        €
+                                    <dd class="text-base font-bold text-gray-900 dark:text-gray-100">
+                                        <x-money :amount="$expense->amount"/>
                                     </dd>
                                 </div>
                                 {{-- Status --}}
@@ -168,7 +168,9 @@
                                                 </div>
                                                 <div class="flex justify-between">
                                                     <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Amount') }}:</span>
-                                                    <span class="font-bold">{{ number_format($expense->amount, 2, ',', '.') }} €</span>
+                                                    <span class="font-bold">
+                                                        <x-money :amount="$expense->amount"/>
+                                                    </span>
                                                 </div>
                                                 <div class="flex justify-between">
                                                     <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Date') }}:</span>
@@ -230,7 +232,9 @@
                                             </div>
                                             <div class="flex justify-between">
                                                 <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Amount') }}:</span>
-                                                <span class="font-bold">{{ number_format($expense->amount, 2, ',', '.') }} €</span>
+                                                <span class="font-bold">
+                                                    <x-money :amount="$expense->amount"/>
+                                                </span>
                                             </div>
                                             <div class="flex justify-between">
                                                 <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Date') }}:</span>
