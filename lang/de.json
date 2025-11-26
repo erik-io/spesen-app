@@ -261,7 +261,7 @@
     "The response is not a view.": "Die Antwort ist keine Ansicht.",
     "This action is unauthorized.": "Diese Aktion ist nicht autorisiert.",
     "This expense report has already been approved.": "Diese Spesenabrechnung wurde bereits genehmigt.",
-    "This is a secure area of the application. Please confirm your password before continuing.": "Dies ist ein sicherer Bereich der Anwendung. Bitte geben Sie Ihr Passwort ein, bevor Sie fortfahren.",
+    "": "Dies ist ein sicherer Bereich der Anwendung. Bitte geben Sie Ihr Passwort ein, bevor Sie fortfahren.",
     "This password reset link will expire in :count minutes.": "Dieser Link zum Zurücksetzen des Passworts läuft in :count Minuten ab.",
     "to": "bis",
     "Toggle navigation": "Navigation umschalten",
