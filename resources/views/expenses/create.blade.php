@@ -17,7 +17,27 @@
                      x-data="{
                          amountInput: '{{ old('amount', '') }}',
                          dateInput: '{{ old('expense_date', '') }}',
-                         costCenterInput: '{{ old('cost_center', '') }}'
+                         costCenterInput: '{{ old('cost_center', '') }}',
+
+                         formatDate(dateString) {
+                                                        if (!dateString) return '{{ __('Not specified') }}';
+                            const date = new Date(dateString);
+                                                        return date.toLocaleDateString('{{ app()->getLocale() }}', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric'
+                            });
+                        },
+
+                        formatCurrency(value) {
+                            if (!value) value = 0;
+                            let number = parseFloat(String(value).replace(',', '.'));
+                            if (isNaN(number)) number = 0;
+                            return new Intl.NumberFormat('{{ app()->getLocale() }}', {
+                                style: 'currency',
+                                currency: 'EUR'
+                            }).format(number);
+                        }
                      }">
 
                     {{-- Validation Errors --}}
@@ -110,12 +130,12 @@
                                         class="font-medium text-gray-600 dark:text-gray-400">{{ __('Amount') }}:</span>
                                     {{-- Display formatted amount, handling commas and ensuring 2 decimal places --}}
                                     <span class="font-bold text-gray-900 dark:text-gray-100"
-                                          x-text="`${parseFloat(String(amountInput).replace(',', '.')).toFixed(2)} {{ __('EUR') }}`"></span>
+                                          x-text="formatCurrency(amountInput)"></span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="font-medium text-gray-600 dark:text-gray-400">{{ __('Date') }}:</span>
                                     <span class="font-bold text-gray-900 dark:text-gray-100"
-                                          x-text="dateInput || '{{ __('Not specified') }}'"></span>
+                                          x-text="formatDate(dateInput)"></span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span
