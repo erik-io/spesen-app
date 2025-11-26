@@ -141,7 +141,7 @@
                             @forelse ($expenses as $expense)
                                 <tbody x-data="{ open: false }"
                                        class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                <tr>
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-150">
                                     {{-- ID --}}
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                         {{ $expense->id }}
