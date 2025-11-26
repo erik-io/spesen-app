@@ -139,10 +139,15 @@
                                         <x-expense-status :status="$expense->status"/>
                                     </td>
                                     {{-- Action Button (Redirect to Expense Details) --}}
-                                    <td class="px-3 py-4 text-center text-sm font-medium">
+                                    <td class="py-4 text-center text-sm font-medium whitespace-nowrap">
                                         <a href="{{ route('expenses.management.show', $expense) }}"
-                                           class='inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 text-sm font-medium'>
-                                            {{ __('View Details') }}
+                                           class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 transition duration-150"
+                                           title="{{ __('View Details') }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                 stroke-width="1.5" stroke="currentColor" class="size-5 mx-auto">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                      d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"/>
+                                            </svg>
                                         </a>
                                     </td>
                                 </tr>
