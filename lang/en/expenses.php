@@ -84,8 +84,4 @@ return [
             'using_laravel' => 'using Laravel',
         ],
     ],
-    'empty' => [
-        'pending' => 'No pending expense reports found',
-        'all' => 'No expense reports found.',
-    ],
 ];

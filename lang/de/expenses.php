@@ -84,8 +84,4 @@ return [
             'using_laravel' => 'mit Laravel',
         ],
     ],
-    'empty' => [
-        'pending' => 'Keine offenen Spesenabrechnungen gefunden.',
-        'all' => 'Keine Spesenabrechnungen gefunden.',
-    ],
 ];
