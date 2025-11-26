@@ -37,7 +37,7 @@
                                     {{ __('My Expenses') }}
                                 </h3>
                                 <p class="text-gray-500 dark:text-gray-400 text-sm">
-                                    {{ $expenses->total() }} {{ __('total expenses') }}
+                                    @choice('total expenses', $expenses->total())
                                 </p>
                             </div>
                         </div>

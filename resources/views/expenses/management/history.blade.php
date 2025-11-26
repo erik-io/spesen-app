@@ -46,7 +46,7 @@
                                     {{ __('Expense Overview') }}
                                 </h3>
                                 <p class="text-gray-500 dark:text-gray-400 text-sm">
-                                    {{ Expense::count() }} {{ __('total expenses') }},
+                                    @choice('total expenses', Expense::count()),
                                     @switch($currentStatus)
                                         @case('all')
                                             {{ $pendingCount }} {{ __('awaiting review') }}
