@@ -26,6 +26,7 @@
 
         <!-- Sun Icon (Light Mode) - Show when dark mode is active -->
         <svg x-show="theme === 'dark'"
+             x-cloak
              class="h-5 w-5"
              fill="none"
              viewBox="0 0 24 24"
