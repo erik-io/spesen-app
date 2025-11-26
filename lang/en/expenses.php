@@ -4,6 +4,20 @@ declare(strict_types=1);
 
 return [
     'app_name' => 'Digital Expense Management',
+    'modal' => [
+        'submission' => [
+            'title' => 'Confirm Submission',
+            'body' => 'Are you sure you want to submit this expense report? You cannot edit it after submission.',
+        ],
+        'rejection' => [
+            'title' => 'Confirm Rejection',
+            'body' => 'Are you sure you want to reject this expense report? The employee will see the comment you provided.',
+        ],
+        'approval' => [
+            'title' => 'Confirm Approval',
+            'body' => 'Are you sure you want to approve this expense report?',
+        ],
+    ],
     'welcome' => [
         'hero' => [
             'title' => 'Manage Your Expenses Effortlessly',

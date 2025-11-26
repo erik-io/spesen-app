@@ -4,6 +4,20 @@ declare(strict_types=1);
 
 return [
     'app_name' => 'Digitale Spesenabrechnung',
+    'modal' => [
+        'submission' => [
+            'title' => 'Einreichung bestätigen',
+            'body' => 'Möchten Sie diese Spesenabrechnung wirklich einreichen? Sie können sie nach dem Absenden nicht mehr bearbeiten.',
+        ],
+        'rejection' => [
+            'title' => 'Ablehnung bestätigen',
+            'body' => 'Möchten Sie diese Spesenabrechnung wirklich ablehnen? Der Mitarbeiter wird Ihren Kommentar sehen.',
+        ],
+        'approval' => [
+            'title' => 'Genehmigung bestätigen',
+            'body' => 'Möchten Sie diese Spesenabrechnung wirklich genehmigen?',
+        ],
+    ],
     'welcome' => [
         'hero' => [
             'title' => 'Verwalten Sie ihre Spesen mühelos',

@@ -150,10 +150,10 @@
                                     <x-modal :name="'confirm-rejection'">
                                         <div class="p-6">
                                             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                                {{ __('modals.rejection.title') }}
+                                                {{ __('expenses.modal.rejection.title') }}
                                             </h2>
                                             <p class="mt-2 text-base text-gray-600 dark:text-gray-300">
-                                                {{ __('modals.rejection.body') }}
+                                                {{ __('expenses.modal.rejection.body') }}
                                             </p>
 
                                             {{-- Dynamic Data Display (Rejection) --}}
@@ -214,10 +214,10 @@
                                         @csrf
                                         @method('PATCH')
                                         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                            {{ __('modals.approval.title') }}
+                                            {{ __('expenses.modal.approval.title') }}
                                         </h2>
                                         <p class="mt-2 text-base text-gray-600 dark:text-gray-300">
-                                            {{ __('modals.approval.body') }}
+                                            {{ __('expenses.modal.approval.body') }}
                                         </p>
 
                                         {{-- Dynamic Data Display (Approve) --}}

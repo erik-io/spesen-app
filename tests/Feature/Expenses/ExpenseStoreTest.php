@@ -47,7 +47,7 @@ class ExpenseStoreTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('confirm-submission');
-        $response->assertSee(__('modals.submission.title'));
+        $response->assertSee(__('expenses.modal.submission.title'));
     }
 
     public function test_create_view_cannot_be_accessed_by_supervisor(): void

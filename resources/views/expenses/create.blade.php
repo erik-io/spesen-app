@@ -96,10 +96,10 @@
                     <x-modal name="confirm-submission">
                         <div class="p-6">
                             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                {{ __('modals.submission.title') }}
+                                {{ __('expenses.modal.submission.title') }}
                             </h2>
                             <p class="mt-2 text-base text-gray-600 dark:text-gray-300">
-                                {{ __('modals.submission.body') }}
+                                {{ __('expenses.modal.submission.body') }}
                             </p>
 
                             {{-- Dynamic Data Display --}}
