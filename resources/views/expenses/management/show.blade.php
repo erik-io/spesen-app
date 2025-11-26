@@ -59,16 +59,14 @@
                                 </div>
                                 {{-- Submission Date --}}
                                 <div class="flex justify-between">
-                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400 mr-1">{{ __('Submission Date') }}
-                                    </dt>
+                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400 mr-1">{{ __('Submission Date') }}</dt>
                                     <dd class="text-base text-gray-900 dark:text-gray-100">{{ $expense->created_at?->isoFormat('LLL') }}</dd>
                                 </div>
                                 {{-- Cost Center --}}
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-100 w-40">
-                                    @php($costCenter = $expense->cost_center ?? __('messages.general.unknown_cost_center'))
-                                    <span class="block max-w-[9rem] truncate"
-                                          title="{{ $costCenter }}">{{ $costCenter }}</span>
-                                </td>
+                                <div class="flex justify-between">
+                                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400 mr-1">{{ __('Cost Center') }}</dt>
+                                    <dd class="text-base text-gray-900 dark:text-gray-100">{{ $expense->cost_center }}</dd>
+                                </div>
                                 {{-- Amount --}}
                                 <div class="flex justify-between">
                                     <dt class="text-base font-medium text-gray-500 dark:text-gray-400 mr-1">{{ __('Amount') }}</dt>
