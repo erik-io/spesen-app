@@ -1,4 +1,12 @@
 @use('App\Models\Expense')
+@php
+    $statusOptions = [
+        'all' => __('All'),
+        Expense::STATUS_PENDING => __('Pending'),
+        Expense::STATUS_APPROVED => __('Approved'),
+        Expense::STATUS_REJECTED => __('Rejected'),
+    ];
+@endphp
 <x-app-layout>
     <x-slot name="title">
         {{ __('Expense History') }}
@@ -23,6 +31,7 @@
                 class="mb-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-100 dark:border-none">
                 <div class="px-6 py-6">
                     <div class="flex items-center justify-between flex-wrap gap-4">
+                        @php($currentStatus = request('status', 'all'))
                         <div class="flex items-center space-x-3">
                             <div
                                 class="flex items-center justify-center w-12 h-12 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
@@ -37,8 +46,21 @@
                                     {{ __('Total Expenses') }}
                                 </h3>
                                 <p class="text-gray-500 dark:text-gray-400 text-sm">
-                                    {{ $expenses->total() }} {{ __('total expenses') }},
-                                    {{ $pendingCount }} {{ __('awaiting review') }}
+                                    {{ Expense::count() }} {{ __('total expenses') }},
+                                    @switch($currentStatus)
+                                        @case('all')
+                                            {{ $pendingCount }} {{ __('awaiting review') }}
+                                            @break
+                                        @case(Expense::STATUS_PENDING)
+                                            {{ $expenses->total() }} {{ __('awaiting review') }}
+                                            @break
+                                        @case(Expense::STATUS_APPROVED)
+                                            {{ $expenses->total() }} {{ __('approved') }}
+                                            @break
+                                        @case(Expense::STATUS_REJECTED)
+                                            {{ $expenses->total() }} {{ __('rejected') }}
+                                            @break
+                                    @endswitch
                                 </p>
                             </div>
                         </div>
@@ -79,13 +101,10 @@
                                 {{ __('Filter') }}
                             </label>
 
-                            @php
-                                $statuses = ['all' => __('All'), Expense::STATUS_PENDING => __('Pending'), Expense::STATUS_APPROVED => __('Approved'), Expense::STATUS_REJECTED => __('Rejected')];
-                            @endphp
                             <select name="status" id="status"
                                     class="border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-200 dark:focus:ring-indigo-800 focus:ring-opacity-50 rounded-md shadow-sm"
                                     onchange="this.form.submit()">
-                                @foreach($statuses as $key => $label)
+                                @foreach($statusOptions as $key => $label)
                                     <option
                                         value="{{ $key }}" {{ request('status', 'all') === $key ? 'selected' : '' }}>
                                         {{ $label }}
