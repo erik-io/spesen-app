@@ -1,5 +1,8 @@
 {
     "preset": "psr12",
+    "exclude": [
+        "lang"
+    ],
     "rules": {
         "declare_strict_types": true,
         "no_unused_imports": true,
