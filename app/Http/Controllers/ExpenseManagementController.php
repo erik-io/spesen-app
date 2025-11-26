@@ -43,7 +43,9 @@ class ExpenseManagementController extends Controller
     {
         $expenses = $this->getPaginatedExpenses($request, 'all');
 
-        return view('expenses.management.history', compact('expenses'));
+        $pendingCount = Expense::where('status', Expense::STATUS_PENDING)->count();
+
+        return view('expenses.management.history', compact('expenses', 'pendingCount'));
     }
 
     private function getPaginatedExpenses(Request $request, string $statusScope)
