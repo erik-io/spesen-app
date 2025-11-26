@@ -7,6 +7,16 @@
 
     <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
 
+    <!-- Dark Mode Initialization -->
+    <script>
+        // Initialize dark mode before page renders, to avoid flash of unstyled content
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
@@ -16,8 +26,9 @@
 </head>
 <body class="font-sans text-gray-900 antialiased">
 <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-    <!-- Language Switcher (Top Right) -->
-    <div class="absolute top-4 right-4">
+    <!-- Theme & Language Switcher (Top Right) -->
+    <div class="absolute top-4 right-4 flex items-center space-x-2">
+        <x-theme-toggle/>
         <x-language-switcher/>
     </div>
 

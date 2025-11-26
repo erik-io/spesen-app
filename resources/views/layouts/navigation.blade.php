@@ -43,6 +43,9 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-2">
+                <!-- Theme Toggle -->
+                <x-theme-toggle/>
+
                 <!-- Language Switcher -->
                 <x-language-switcher/>
 
@@ -137,6 +140,9 @@
             </div>
 
             <div class="mt-3 space-y-1">
+                <div class="flex items-center px-4 py-2">
+                    <x-theme-toggle/>
+                </div>
                 <!-- Language Selection -->
                 <div class="px-4 py-2">
                     <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
