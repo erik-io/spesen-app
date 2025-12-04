@@ -285,6 +285,7 @@
     "Toggle navigation": "Toggle navigation",
     "Too Early": "Too Early",
     "Too Many Requests": "Too Many Requests",
+    "total expenses": "{0} :count total expenses|{1} :count total expense|[2,*] :count total expenses",
     "Track and manage all your submitted expenses": "Track and manage all your submitted expenses",
     "Track Status:": "Track Status:",
     "Translate": "Translate",
